@@ -1,0 +1,325 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:edubridge/services/user_service.dart';
+import 'package:flutter/material.dart';
+
+class StudentRegistrationForm extends StatefulWidget {
+  const StudentRegistrationForm({super.key});
+
+  @override
+  State<StudentRegistrationForm> createState() =>
+      _StudentRegistrationFormState();
+}
+
+class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _dobController = TextEditingController();
+  final _genderController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _houseNameController = TextEditingController();
+  final _talukController = TextEditingController();
+  final _districtController = TextEditingController();
+  final _stateController = TextEditingController();
+  final _nationalityController = TextEditingController();
+  final _pincodeController = TextEditingController();
+  final _aadharNumberController = TextEditingController();
+  final _institutionNameController = TextEditingController();
+  final _courseController = TextEditingController();
+  final _yearOfEnrollmentController = TextEditingController();
+  final _academicYearController = TextEditingController();
+  final _percentageController = TextEditingController();
+  final _bankAccountNumberController = TextEditingController();
+  final _bankNameController = TextEditingController();
+  final _ifscCodeController = TextEditingController();
+  final _accountTypeController = TextEditingController();
+  final _branchNameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  UserService userService = UserService();
+
+  Future<void> submitForm() async {
+    var userdata = jsonEncode({
+      "name": _nameController.text,
+      "dob": _dobController.text,
+      "gender": _genderController.text,
+      "email": _emailController.text,
+      "phone_number": _phoneController.text,
+      "house_name": _houseNameController.text,
+      "taluk": _talukController.text,
+      "district": _districtController.text,
+      "state": _stateController.text,
+      "nationality": _nationalityController.text,
+      "pincode": _pincodeController.text,
+      "aadhar_number": _aadharNumberController.text,
+      "instituition": _institutionNameController.text,
+      "course": _courseController.text,
+      "year_of_enrollment": _yearOfEnrollmentController.text,
+      "academic_year": _academicYearController.text,
+      "percentage": _percentageController.text,
+      "account_number": _bankAccountNumberController.text,
+      "bank_name": _bankNameController.text,
+      "ifsc_code": _ifscCodeController.text,
+      "account_type": _accountTypeController.text,
+      "branch_name": _branchNameController.text,
+      "password": _passwordController.text,
+      "confirm_password": _confirmPasswordController.text,
+      "usertype": "Student"
+    });
+    print(userdata);
+    try {
+      final response = await userService.registerUser(userdata);
+      print(response.data);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration Successful!')),
+      );
+    } on DioException catch (e) {
+      print(e.response!.data);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error Registering User!')),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _dobController.dispose();
+    _genderController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _houseNameController.dispose();
+    _talukController.dispose();
+    _districtController.dispose();
+    _stateController.dispose();
+    _nationalityController.dispose();
+    _pincodeController.dispose();
+    _aadharNumberController.dispose();
+    _institutionNameController.dispose();
+    _courseController.dispose();
+    _yearOfEnrollmentController.dispose();
+    _academicYearController.dispose();
+    _percentageController.dispose();
+    _bankAccountNumberController.dispose();
+    _bankNameController.dispose();
+    _ifscCodeController.dispose();
+    _accountTypeController.dispose();
+    _branchNameController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    TextInputType keyboardType = TextInputType.text,
+    bool obscureText = false,
+    String? Function(String?)? validator,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(labelText: label),
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        validator: validator,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Student Registration'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              _buildTextField(
+                controller: _nameController,
+                label: 'Name',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your  name' : null,
+              ),
+              _buildTextField(
+                controller: _dobController,
+                label: 'Date of Birth',
+                keyboardType: TextInputType.datetime,
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your date of birth' : null,
+              ),
+              _buildTextField(
+                controller: _genderController,
+                label: 'Gender',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your gender' : null,
+              ),
+              _buildTextField(
+                controller: _emailController,
+                label: 'Email',
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) => value!.isEmpty || !value.contains('@')
+                    ? 'Please enter a valid email address'
+                    : null,
+              ),
+              _buildTextField(
+                controller: _phoneController,
+                label: 'Phone',
+                keyboardType: TextInputType.phone,
+                validator: (value) => value!.isEmpty || value.length != 10
+                    ? 'Please enter a valid 10-digit phone number'
+                    : null,
+              ),
+              _buildTextField(
+                controller: _houseNameController,
+                label: 'House Name',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your house name' : null,
+              ),
+              _buildTextField(
+                controller: _talukController,
+                label: 'Taluk',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your taluk' : null,
+              ),
+              _buildTextField(
+                controller: _districtController,
+                label: 'District',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your district' : null,
+              ),
+              _buildTextField(
+                controller: _stateController,
+                label: 'State',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your state' : null,
+              ),
+              _buildTextField(
+                controller: _nationalityController,
+                label: 'Nationality',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your nationality' : null,
+              ),
+              _buildTextField(
+                controller: _pincodeController,
+                label: 'Pincode',
+                keyboardType: TextInputType.number,
+                validator: (value) => value!.isEmpty || value.length != 6
+                    ? 'Please enter a valid 6-digit pincode'
+                    : null,
+              ),
+              _buildTextField(
+                controller: _aadharNumberController,
+                label: 'Aadhar Number',
+                keyboardType: TextInputType.number,
+                validator: (value) => value!.isEmpty || value.length != 12
+                    ? 'Please enter a valid 12-digit Aadhar number'
+                    : null,
+              ),
+              _buildTextField(
+                controller: _institutionNameController,
+                label: 'Institution Name',
+                validator: (value) => value!.isEmpty
+                    ? 'Please enter your institution name'
+                    : null,
+              ),
+              _buildTextField(
+                controller: _courseController,
+                label: 'Course',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your course' : null,
+              ),
+              _buildTextField(
+                controller: _yearOfEnrollmentController,
+                label: 'Year of Enrollment',
+                keyboardType: TextInputType.number,
+                validator: (value) => value!.isEmpty
+                    ? 'Please enter your year of enrollment'
+                    : null,
+              ),
+              _buildTextField(
+                controller: _academicYearController,
+                label: 'Academic Year',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your academic year' : null,
+              ),
+              _buildTextField(
+                controller: _percentageController,
+                label: 'Percentage',
+                keyboardType: TextInputType.number,
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your percentage' : null,
+              ),
+              _buildTextField(
+                controller: _bankAccountNumberController,
+                label: 'Bank Account Number',
+                keyboardType: TextInputType.number,
+                validator: (value) => value!.isEmpty
+                    ? 'Please enter your bank account number'
+                    : null,
+              ),
+              _buildTextField(
+                controller: _bankNameController,
+                label: 'Bank Name',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your bank name' : null,
+              ),
+              _buildTextField(
+                controller: _ifscCodeController,
+                label: 'IFSC Code',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your IFSC code' : null,
+              ),
+              _buildTextField(
+                controller: _accountTypeController,
+                label: 'Account Type',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your account type' : null,
+              ),
+              _buildTextField(
+                controller: _branchNameController,
+                label: 'Branch Name',
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your branch name' : null,
+              ),
+              _buildTextField(
+                controller: _passwordController,
+                label: 'Password',
+                obscureText: true,
+                validator: (value) => value!.isEmpty || value.length < 6
+                    ? 'Password must be at least 6 characters long'
+                    : null,
+              ),
+              _buildTextField(
+                controller: _confirmPasswordController,
+                label: 'Confirm Password',
+                obscureText: true,
+                validator: (value) => value != _passwordController.text
+                    ? 'Passwords do not match'
+                    : null,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    submitForm();
+                  }
+                },
+                child: const Text('Register'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
