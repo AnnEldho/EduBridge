@@ -1,5 +1,4 @@
 import 'package:edubridge/college-register.dart';
-import 'package:edubridge/ngo-register.dart';
 import 'package:edubridge/sponsor-register.dart';
 import 'package:edubridge/student-register.dart';
 import 'package:flutter/material.dart';
@@ -45,21 +44,7 @@ class UserTypeSelection extends StatelessWidget {
                   'Students',
                   style: TextStyle(fontSize: 20),
                 ),
-              ),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NGORegistrationForm()),
-                  );
-                },
-                child: const Text(
-                  'NGO',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
+              ), 
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {

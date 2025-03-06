@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:edubridge/complaint.dart';
+import 'package:edubridge/scholarship.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class Collegedashboard extends StatefulWidget {
@@ -53,14 +55,28 @@ class _CollegedashboardState extends State<Collegedashboard> {
               onTap: (){
 
               },),
-            ListTile(title: Text("About"),leading: Icon(Icons.help,color: Colors.black,),
-              onTap: (){
-
+            ListTile(title: Text("Scholarship"),leading: Icon(Icons.school_sharp,color: Colors.black,),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScholarshipPage()),
+                );
               },),
-            ListTile(title: Text("Phone"),leading: Icon(Icons.phone,color: Colors.black,),
+            ListTile(title: Text("Complaints"),leading: Icon(Icons.phone,color: Colors.black,),
               onTap: (){
-
-              },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ComplaintPage()),
+                );
+              }
+              ),
+              ListTile(title: Text("Students"),leading: Icon(Icons.person,color: Colors.black,),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ComplaintPage()),
+                );
+              }
               ),
               ListTile(
               title: Text("Logout"),

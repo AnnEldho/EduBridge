@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:edubridge/change_password.dart';
 import 'package:edubridge/services/user_service.dart';
 import 'package:edubridge/usertypes.dart';
 import 'package:flutter/material.dart';
@@ -125,6 +126,16 @@ class _LoginFormState extends State<LoginForm> {
               ElevatedButton(
                 onPressed: _submitForm,
                 child: const Text('Login'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ChangePassword()),
+                  );
+                },
+                child: const Text('Forgot Password?'),
               ),
               TextButton(
                 onPressed: () {

@@ -1,4 +1,7 @@
 
+import 'package:edubridge/college_list.dart';
+import 'package:edubridge/ngo-register.dart';
+import 'package:edubridge/sponsor_list.dart';
 import 'package:flutter/material.dart';
 class Admindashboard extends StatefulWidget {
   const Admindashboard({super.key});
@@ -33,12 +36,30 @@ class _Admindashboard extends State<Admindashboard> {
               onTap: (){
 
               },),
-            ListTile(title: Text("Phone"),leading: Icon(Icons.phone,color: Colors.black,),
+            ListTile(title: Text("College"),leading: Icon(Icons.school,color: Colors.black,),
               onTap: (){
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>CollegeList()),
+                );
               },
               ),
-              
+              ListTile(title: Text("Sponsors"),leading: Icon(Icons.people,color: Colors.black,),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>SponsorList()),
+                );
+              },
+              ),
+              ListTile(title: Text("Add NGO"),leading: Icon(Icons.business,color: Colors.black,),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>NGORegistrationForm()),
+                );
+              },
+              ),
 
           ],
         ),

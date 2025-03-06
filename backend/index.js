@@ -10,6 +10,7 @@ const StudentRoutes = require("./routes/student-routes");
 const CollegeRoutes = require("./routes/college-routes");
 const NgoRoutes = require("./routes/ngo-routes");
 const SponsorRoutes = require("./routes/sponsor-routes");
+const ScholarshipRoutes = require("./routes/scholarship-routes");
 
 //DB Connection
 mongoose
@@ -30,6 +31,7 @@ app.use("/api", StudentRoutes);
 app.use("/api", CollegeRoutes);
 app.use("/api", NgoRoutes);
 app.use("/api", SponsorRoutes);
+app.use("/api", ScholarshipRoutes); 
 
 //PORT
 const port = process.env.PORT || 8000;

@@ -6,11 +6,6 @@ var sponsorSchema=new mongoose.Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 		required: true,
-	},
-	
-	status: {
-		type:String,
-		
 	}
 });
 module.exports=mongoose.model('Sponsor',sponsorSchema);

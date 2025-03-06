@@ -39,7 +39,10 @@ var userSchema= new mongoose.Schema({
 	},
 	usertype:{
 		type:String,
-		
+	},
+	status:{
+		type:String,
+		default:"Pending"
 	}
 })
 module.exports= mongoose.model('User',userSchema);

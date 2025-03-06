@@ -120,19 +120,139 @@ exports.Login=(req,res)=>{
        })
     
 }
-exports.GetUsers = (req, res) => {
-    const status = req.query.status;
-    let query = {};
 
-    if (status) {
-        query.status = status;
-    }
+exports.getPendingSponsor = (req, res) => {
+    User.find({ usertype: 'Sponsor', status: 'Pending' }).then((users) => {
+        if (users.length > 0) {
+            const sponsorIds = users.map(user => user._id);
+            Sponsor.find({ user_id: { $in: sponsorIds } }).then((sponsors) => {
+                const pendingSponsors = sponsors.map(sponsor => {
+                    const user = users.find(user => user._id.equals(sponsor.user_id));
+                    return {
+                        sponsor,
+                        user
+                    };
+                });
 
-    User.find(query).then((users) => {
-        if (users) {
-            return res.status(200).json({ users });
+                return res.status(200).json(pendingSponsors);
+            }).catch((err) => {
+                return res.status(500).json({ message: "Internal error", error: err });
+            });
         } else {
-            return res.status(500).json({ message: "Internal error" });
+            return res.status(404).json({ message: "No pending sponsors found" });
         }
+    }).catch((err) => {
+        return res.status(500).json({ message: "Internal error", error: err });
+    });
+};
+
+exports.getPendingCollege = (req, res) => {
+    User.find({ usertype: 'College', status: 'Pending' }).then((users) => {
+        if (users.length > 0) {
+            const collegeids = users.map(user => user._id);
+            College.find({ user_id: { $in: collegeids } }).then((advisors) => {
+                const pendingCollege = advisors.map(college => {
+                    const user = users.find(user => user._id.equals(college.user_id));
+                    return {
+                        college,
+                        user
+                    };
+                });
+                
+                return res.status(200).json(pendingCollege);
+            }).catch((err) => {
+                return res.status(500).json({ message: "Internal error", error: err });
+            });
+        } else {
+            return res.status(404).json({ message: "No pending advisors found" });
+        }
+    }).catch((err) => {
+        return res.status(500).json({ message: "Internal error", error: err });
+    })
+};
+
+exports.updateStatus = (req, res) => {  
+
+    User.findOneAndUpdate({ _id: req.body.id    }, { status: req.body.status }, { new: true }).then((ngo) => {          
+        if (ngo) {
+            return res.status(200).json({ message: "Status updated successfully" });
+        } else {
+            return res.status(404).json({ message: "Ngo not found" });
+        }
+    }).catch((err) => {           
+        return res.status(500).json({ message: "Internal error", error: err });
+    }); 
+};
+
+exports.getCollegeList = (req,res) => {
+    User.find({ usertype: 'College'}).then((users) => {
+        if (users.length > 0) {
+            const collegeids = users.map(user => user._id);
+            College.find({ user_id: { $in: collegeids } }).then((advisors) => {
+                const College = advisors.map(college => {
+                    const user = users.find(user => user._id.equals(college.user_id));
+                    return {
+                        college,
+                        user
+                    };
+                });
+                
+                return res.status(200).json(College);
+            }).catch((err) => {
+                return res.status(500).json({ message: "Internal error", error: err });
+            });
+        } else {
+            return res.status(404).json({ message: "No colleges found" });
+        }
+    }).catch((err) => {
+        return res.status(500).json({ message: "Internal error", error: err });
+    })
+};
+
+exports.getSponsorList = (req,res) => {
+    User.find({ usertype: 'Sponsor'}).then((users) => {
+        if (users.length > 0) {
+            const sponsorIds = users.map(user => user._id);
+            Sponsor.find({ user_id: { $in: sponsorIds } }).then((sponsors) => {
+                const Sponsor = sponsors.map(sponsor => {
+                    const user = users.find(user => user._id.equals(sponsor.user_id));
+                    return {
+                        sponsor,
+                        user
+                    };
+                });
+
+                return res.status(200).json(Sponsor);
+            }).catch((err) => {
+                return res.status(500).json({ message: "Internal error", error: err });
+            });
+        } else {
+            return res.status(404).json({ message: "No sponsors found" });
+        }
+    }).catch((err) => {
+        return res.status(500).json({ message: "Internal error", error: err });
+    });
+}
+// Add the changePassword function here
+exports.changePassword = (req, res) => {
+    const { email, oldPassword, newPassword } = req.body;
+
+    User.findOne({ email: email }).then((user) => {
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (user.password !== oldPassword) {
+            return res.status(400).json({ message: "Old password is incorrect" });
+        }
+
+        user.password = newPassword;
+        user.save().then((updatedUser) => {
+            return res.status(200).json({ message: "Password changed successfully" });
+        }).catch((err) => {
+            return res.status(500).json({ message: "Internal error", error: err });
+        });
+    }).catch((err) => {
+        return res.status(500).json({ message: "Internal error", error: err });
     });
 };

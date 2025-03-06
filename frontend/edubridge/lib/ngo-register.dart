@@ -44,6 +44,7 @@ class _NGORegistrationFormState extends State<NGORegistrationForm> {
       "district": _districtController.text,
       "state": _stateController.text,
       "pincode": _pincodeController.text,
+      "status":"Active",
       "password": _passwordController.text,
       "confirm_password": _confirmPasswordController.text,
       "usertype": "Ngo",

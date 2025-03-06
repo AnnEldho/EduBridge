@@ -10,6 +10,7 @@ var ngoSchema = new mongoose.Schema({
 	account_number: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 	account_type: {
 		type: String,
@@ -38,10 +39,6 @@ var ngoSchema = new mongoose.Schema({
 	incharge_phone:{
 		type:String,
 		required:true,
-	},
-	status: {
-		type: String,
-		
 	}
 });
 module.exports = mongoose.model('Ngo', ngoSchema);

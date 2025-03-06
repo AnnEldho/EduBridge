@@ -26,6 +26,7 @@ var studentSchema = new mongoose.Schema({
     aadhar_number: {
         type: String,
         required: true,
+        unique: true,
     },
     instituition: {
         type: String,
@@ -51,6 +52,7 @@ var studentSchema = new mongoose.Schema({
 	account_number: {
 		type: String,
 		required: true,
+        unique: true,
 	},
 	account_type: {
 		type: String,
@@ -67,11 +69,7 @@ var studentSchema = new mongoose.Schema({
 	ifsc_code: {
 		type: String,
 		required: true,
-	},
-    status: {
-        type: String,
-        
-    }
+	}
 });
 
 module.exports = mongoose.model('Student', studentSchema);

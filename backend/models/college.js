@@ -18,9 +18,6 @@ var collegeSchema= new mongoose.Schema({
 	incharge_phone:{
 		type:String,
 		required:true,
-	},
-	status:{
-		type:String,
-	},
+	}
 })
 module.exports= mongoose.model('College',collegeSchema);
