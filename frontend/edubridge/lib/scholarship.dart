@@ -20,8 +20,24 @@ class ScholarshipPageState extends State<ScholarshipPage> {
   
 
     UserService userService=UserService();
+    @override
+void initState() {
+  super.initState();
+  fetchUserData();
+}
+
+Future<void> fetchUserData() async {
+  try {
+    final response = await userService.getUserData(); // Assuming userService has this method
+    print('Logged-in User Data: $response'); // Print user details
+  } catch (e) {
+    print('Error fetching user data: $e');
+  }
+}
+
     Future<void> submitForm() async {
     var userdata = jsonEncode({
+
       "scholarshipname":_scholarshipnameController.text,
       "amount": _amountController.text,
       "description":_descriptionController.text,
@@ -31,6 +47,7 @@ class ScholarshipPageState extends State<ScholarshipPage> {
     print(userdata);
     try {
       final response = await userService.registerUser(userdata);
+      
       print(response.data);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registration Successful!')),

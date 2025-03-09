@@ -1,41 +1,36 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
-import 'package:edubridge/services/user_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CollegeProfile extends StatefulWidget {
   const CollegeProfile({super.key});
 
   @override
-  State<CollegeProfile> createState() => CollegeProfileState();
+  State<CollegeProfile> createState() => _CollegeProfileState();
 }
 
-class CollegeProfileState extends State<CollegeProfile> {
-  UserService _userService = UserService();
-  bool isLoading = true;
-  List<dynamic> collegeProfile = [];
-  Future<void> getCollegeProfile(String id) async {
-      print("Getting College Profile");
-      var userdata = jsonEncode({"id": id});
-    try {
-      final response = await _userService.getCollege();
-      print(response.data);
-      setState(() {
-        collegeProfile = response.data;
-        isLoading = false;
-      });
-    } on DioException catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      print(e.error);
-    }
+class _CollegeProfileState extends State<CollegeProfile> {
+	final storage = FlutterSecureStorage();
+  String name = "";
+  String email = "";
+  getUser() async {
+    print("Getting User");
+    Map<String, String> allValues = await storage.readAll();
+    var user = allValues['user'];
+    print(user);
+    var userMap = jsonDecode(user!);
+    print(userMap);
+    setState(() {
+      name = userMap['name'];
+      email = userMap['email'];
+    });
   }
-@override
+
+  @override
   void initState() {
+    getUser();
     super.initState();
-    getCollegeProfile();
   }
   @override
   Widget build(BuildContext context) {

@@ -255,4 +255,44 @@ exports.changePassword = (req, res) => {
     }).catch((err) => {
         return res.status(500).json({ message: "Internal error", error: err });
     });
-};
+
+    exports.getUserData = (req, res) => {
+        const { userId } = req.params;
+    
+        User.findById(userId).then((user) => {
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+    
+            let model;
+            switch (user.usertype) {
+                case 'Student':
+                    model = Student;
+                    break;
+                case 'College':
+                    model = College;
+                    break;
+                case 'Ngo':
+                    model = Ngo;
+                    break;
+                case 'Sponsor':
+                    model = Sponsor;
+                    break;
+                default:
+                    return res.status(400).json({ message: "Invalid usertype" });
+            }
+    
+            model.findOne({ user_id: user._id }).then((details) => {
+                if (details) {
+                    return res.status(200).json({ user, details });
+                } else {
+                    return res.status(404).json({ message: `${user.usertype} details not found` });
+                }
+            }).catch((err) => {
+                return res.status(500).json({ message: "Internal error", error: err });
+            });
+        }).catch((err) => {
+            return res.status(500).json({ message: "Internal error", error: err });
+        });
+    };
+}

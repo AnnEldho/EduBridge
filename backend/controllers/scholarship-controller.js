@@ -13,7 +13,7 @@ exports.AddScholarship = (req, res) => {
 			})
 		}
 		else {
-			return res.status(400).json({ message: "User not found" });
+			return res.status(400).json({ message: "Not found" });
 		}
 	})
 }

@@ -3,6 +3,7 @@ import 'package:edubridge/college_list.dart';
 import 'package:edubridge/ngo-register.dart';
 import 'package:edubridge/sponsor_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class Admindashboard extends StatefulWidget {
   const Admindashboard({super.key});
 
@@ -11,6 +12,7 @@ class Admindashboard extends StatefulWidget {
 }
 
 class _Admindashboard extends State<Admindashboard> {
+  final storage = FlutterSecureStorage();
 @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +61,18 @@ class _Admindashboard extends State<Admindashboard> {
                   MaterialPageRoute(builder: (context) =>NGORegistrationForm()),
                 );
               },
+              ),ListTile(
+              title: Text("Logout"),
+              leading: Icon(
+                Icons.logout,
+                color: Colors.black,
               ),
+              onTap: () async {
+                await storage.delete(key: "user");
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/login', (Route<dynamic> route) => false);
+              },
+            ),
 
           ],
         ),

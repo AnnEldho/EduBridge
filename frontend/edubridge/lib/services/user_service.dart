@@ -44,4 +44,9 @@ class UserService {
     final response = await dio.post("${url}updatestatus", data: userdata);
     return response;
   }
+
+  getUserData() async {
+    final response = await dio.get("${url}getuserdata");
+    return response;
+  }
 }
