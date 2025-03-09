@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:edubridge/joinedscholorship.dart';
 import 'package:edubridge/viewallscholorship.dart';
+import 'package:edubridge/viewsponsorships.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -111,6 +112,16 @@ class _StudentdashboardState extends State<Studentdashboard> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ViewJoinedScholorship()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.monetization_on),
+            title: const Text("Sponsorship"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ViewSponsorship()),
               );
             },
           ),

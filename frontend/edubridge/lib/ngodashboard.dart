@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:edubridge/addscholorship.dart';
+import 'package:edubridge/addsponsorshiprequest.dart';
+import 'package:edubridge/mysponsorshiprequest.dart';
 import 'package:edubridge/viewscholorship.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -120,6 +122,25 @@ class _NGODashboardState extends State<NGODashboard> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ViewScholorship()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text("Send Sponsorship Request"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SponsorShipRequest()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text("My Sponsorship Request"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MySponsorshipRequest()),
                 );
               },
             ),

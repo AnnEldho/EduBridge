@@ -108,4 +108,72 @@ class UserService {
         data: {"scholorshipid": scholarshipId});
     return response;
   }
+
+  //sponsorship
+  addSponsorRequest(String requestData) async {
+    final response = await dio.post("${url}add-request", data: requestData);
+    return response;
+  }
+
+  viewSponsorRequestBySponsorId(String sponsorId) async {
+    final response = await dio
+        .get("${url}view-request-by-sponsorid", data: {"sponsorid": sponsorId});
+    return response;
+  }
+
+  viewSponsorRequestByNgoId(String ngoId) async {
+    final response =
+        await dio.get("${url}view-request-by-ngoid", data: {"ngoid": ngoId});
+    return response;
+  }
+
+  updateSponsorRequestStatus(String requestData) async {
+    final response =
+        await dio.put("${url}update-request-status", data: requestData);
+    return response;
+  }
+
+  getAllSponsors() async {
+    final response = await dio.get("${url}get-all-sponsors");
+    return response;
+  }
+
+  //sponsorship
+  viewAccepedSponsorship() async {
+    final response = await dio.get(
+      "${url}view-accepted-sponsor-request",
+    );
+    return response;
+  }
+
+  joinSponsorship(String sponsorshipData) async {
+    final response =
+        await dio.post("${url}join-sponsorship", data: sponsorshipData);
+    return response;
+  }
+
+  viewJoinedSponsorship(userid) async {
+    final response = await dio
+        .get("${url}view-joined-sponsorship", data: {"userid": userid});
+    return response;
+  }
+
+  viewJoinedSponsorshipBySponsorId(String sponsorId) async {
+    final response = await dio.get("${url}view-joined-sponsorship-by-sponsorid",
+        data: {"sponsorid": sponsorId});
+    return response;
+  }
+
+  viewJoinedSponsorshipByNgoId(String ngoId) async {
+    final response = await dio
+        .get("${url}view-joined-sponsorship-by-ngoid", data: {"ngoid": ngoId});
+    return response;
+  }
+
+  viewJoinedSponsorshipBySponsorshipId(String sponsorshipId) async {
+    final response = await dio.get(
+        "${url}view-joined-sponsorship-by-sponsorshipid",
+        data: {"sponsorshipid": sponsorshipId});
+    return response;
+  }
 }
