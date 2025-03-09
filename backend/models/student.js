@@ -12,7 +12,7 @@ var studentSchema = new mongoose.Schema({
         required: true,
     },
     dob: {
-        type: Date,
+        type: String,
         required: true,
     },
     gender: {
@@ -29,34 +29,22 @@ var studentSchema = new mongoose.Schema({
         unique: true,
     },
     instituition: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
     },
     course: {
         type: String,
         required: true,
     },
-    year_of_enrollment: {
-        type: Number,
-        required: true,
-    },
     academic_year: {
         type: String,
         required: true,
-    },
-    percentage: {
-        type: Number,
-        required: true,
-    },
-    
+    },    
 	account_number: {
 		type: String,
 		required: true,
         unique: true,
-	},
-	account_type: {
-		type: String,
-		required: true,
 	},
 	bank_name: {
 		type: String,

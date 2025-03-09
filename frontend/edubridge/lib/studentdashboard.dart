@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:edubridge/joinedscholorship.dart';
+import 'package:edubridge/viewallscholorship.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -88,6 +90,31 @@ class _StudentdashboardState extends State<Studentdashboard> {
             ),
           ],
         ),
+      ),
+      body: Column(
+        children: [
+          ListTile(
+            leading: Icon(Icons.school),
+            title: const Text("Scholarship"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ViewAllScholorship()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.manage_search_rounded),
+            title: const Text("My Scholarship"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ViewJoinedScholorship()),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

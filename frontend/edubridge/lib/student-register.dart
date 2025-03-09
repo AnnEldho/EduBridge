@@ -40,6 +40,26 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
   final _confirmPasswordController = TextEditingController();
 
   UserService userService = UserService();
+  List<dynamic> collegeList = [];
+
+  Future<void> getCollegeList() async {
+    try {
+      final response = await userService.getCollegeList();
+      print(response.data);
+      setState(() {
+        collegeList = response.data;
+      });
+    } on DioException catch (e) {
+      print(e.response!.data);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCollegeList();
+  }
 
   Future<void> submitForm() async {
     var userdata = jsonEncode({
@@ -57,13 +77,10 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
       "aadhar_number": _aadharNumberController.text,
       "instituition": _institutionNameController.text,
       "course": _courseController.text,
-      "year_of_enrollment": _yearOfEnrollmentController.text,
       "academic_year": _academicYearController.text,
-      "percentage": _percentageController.text,
       "account_number": _bankAccountNumberController.text,
       "bank_name": _bankNameController.text,
       "ifsc_code": _ifscCodeController.text,
-      "account_type": _accountTypeController.text,
       "branch_name": _branchNameController.text,
       "password": _passwordController.text,
       "confirm_password": _confirmPasswordController.text,
@@ -74,8 +91,12 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
       final response = await userService.registerUser(userdata);
       print(response.data);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration Successful!')),
+        SnackBar(
+          content: Text('Registration Successful!'),
+          duration: const Duration(seconds: 2),
+        ),
       );
+      Navigator.pop(context);
     } on DioException catch (e) {
       print(e.response!.data);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -150,18 +171,50 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter your  name' : null,
               ),
-              _buildTextField(
-                controller: _dobController,
-                label: 'Date of Birth',
-                keyboardType: TextInputType.datetime,
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your date of birth' : null,
+              GestureDetector(
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      _dobController.text =
+                          "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                    });
+                  }
+                },
+                child: AbsorbPointer(
+                  child: _buildTextField(
+                    controller: _dobController,
+                    label: 'Date of Birth',
+                    keyboardType: TextInputType.datetime,
+                    validator: (value) => value!.isEmpty
+                        ? 'Please enter your date of birth'
+                        : null,
+                  ),
+                ),
               ),
-              _buildTextField(
-                controller: _genderController,
-                label: 'Gender',
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(labelText: 'Gender'),
+                value: _genderController.text.isEmpty
+                    ? null
+                    : _genderController.text,
+                items: ['Male', 'Female', 'Other'].map((String gender) {
+                  return DropdownMenuItem<String>(
+                    value: gender,
+                    child: Text(gender),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _genderController.text = newValue!;
+                  });
+                },
                 validator: (value) =>
-                    value!.isEmpty ? 'Please enter your gender' : null,
+                    value == null ? 'Please select your gender' : null,
               ),
               _buildTextField(
                 controller: _emailController,
@@ -225,12 +278,24 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                     ? 'Please enter a valid 12-digit Aadhar number'
                     : null,
               ),
-              _buildTextField(
-                controller: _institutionNameController,
-                label: 'Institution Name',
-                validator: (value) => value!.isEmpty
-                    ? 'Please enter your institution name'
-                    : null,
+              DropdownButtonFormField(
+                decoration: InputDecoration(labelText: 'Institution Name'),
+                value: _institutionNameController.text.isEmpty
+                    ? null
+                    : _institutionNameController.text,
+                items: collegeList.map<DropdownMenuItem<String>>((college) {
+                  return DropdownMenuItem<String>(
+                    value: college['user']['_id'],
+                    child: Text(college['user']['name']),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _institutionNameController.text = value as String;
+                  });
+                },
+                validator: (value) =>
+                    value == null ? 'Please select your institution' : null,
               ),
               _buildTextField(
                 controller: _courseController,
@@ -239,25 +304,10 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                     value!.isEmpty ? 'Please enter your course' : null,
               ),
               _buildTextField(
-                controller: _yearOfEnrollmentController,
-                label: 'Year of Enrollment',
-                keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty
-                    ? 'Please enter your year of enrollment'
-                    : null,
-              ),
-              _buildTextField(
                 controller: _academicYearController,
                 label: 'Academic Year',
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter your academic year' : null,
-              ),
-              _buildTextField(
-                controller: _percentageController,
-                label: 'Percentage',
-                keyboardType: TextInputType.number,
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your percentage' : null,
               ),
               _buildTextField(
                 controller: _bankAccountNumberController,
@@ -278,12 +328,6 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                 label: 'IFSC Code',
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter your IFSC code' : null,
-              ),
-              _buildTextField(
-                controller: _accountTypeController,
-                label: 'Account Type',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your account type' : null,
               ),
               _buildTextField(
                 controller: _branchNameController,
