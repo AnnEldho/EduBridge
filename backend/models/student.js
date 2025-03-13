@@ -40,7 +40,11 @@ var studentSchema = new mongoose.Schema({
     academic_year: {
         type: String,
         required: true,
-    },    
+    },  
+    cgpa: {
+        type: Number,
+        required: true,
+    },  
 	account_number: {
 		type: String,
 		required: true,

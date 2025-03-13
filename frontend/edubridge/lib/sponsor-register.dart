@@ -8,7 +8,8 @@ class SponsorRegistrationForm extends StatefulWidget {
   const SponsorRegistrationForm({super.key});
 
   @override
-  State<SponsorRegistrationForm> createState() => _SponsorRegistrationFormState();
+  State<SponsorRegistrationForm> createState() =>
+      _SponsorRegistrationFormState();
 }
 
 class _SponsorRegistrationFormState extends State<SponsorRegistrationForm> {
@@ -24,14 +25,14 @@ class _SponsorRegistrationFormState extends State<SponsorRegistrationForm> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  UserService userService=UserService();
+  UserService userService = UserService();
 
   Future<void> submitForm() async {
     var userdata = jsonEncode({
-      "name":_nameController.text,
+      "name": _nameController.text,
       "email": _emailController.text,
-      "phone_number":_phoneNumberController.text,
-      "place":_placeController.text,
+      "phone_number": _phoneNumberController.text,
+      "place": _placeController.text,
       "taluk": _talukController.text,
       "district": _districtController.text,
       "state": _stateController.text,
@@ -97,76 +98,99 @@ class _SponsorRegistrationFormState extends State<SponsorRegistrationForm> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              _buildTextField(
-                controller: _nameController,
-                label: 'Name',
-                validator: (value) => value!.isEmpty ? 'Please enter the sponsor name' : null,
+        child: Card(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  _buildTextField(
+                    controller: _nameController,
+                    label: 'Name',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter the sponsor name' : null,
+                  ),
+                  _buildTextField(
+                    controller: _placeController,
+                    label: 'Place',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter the place' : null,
+                  ),
+                  _buildTextField(
+                    controller: _talukController,
+                    label: 'Taluk',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter the taluk' : null,
+                  ),
+                  _buildTextField(
+                    controller: _districtController,
+                    label: 'District',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter the district' : null,
+                  ),
+                  _buildTextField(
+                    controller: _stateController,
+                    label: 'State',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter the state' : null,
+                  ),
+                  _buildTextField(
+                    controller: _pincodeController,
+                    label: 'Pincode',
+                    keyboardType: TextInputType.number,
+                    validator: (value) => value!.isEmpty || value.length != 6
+                        ? 'Please enter a valid 6-digit pincode'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _phoneNumberController,
+                    label: 'Phone Number',
+                    keyboardType: TextInputType.phone,
+                    validator: (value) => value!.isEmpty || value.length != 10
+                        ? 'Please enter a valid 10-digit phone number'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _emailController,
+                    label: 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) => value!.isEmpty || !value.contains('@')
+                        ? 'Please enter a valid email address'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _passwordController,
+                    label: 'Password',
+                    obscureText: true,
+                    validator: (value) => value!.isEmpty || value.length < 6
+                        ? 'Password must be at least 6 characters long'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _confirmPasswordController,
+                    label: 'Confirm Password',
+                    obscureText: true,
+                    validator: (value) => value != _passwordController.text
+                        ? 'Passwords do not match'
+                        : null,
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        submitForm();
+                      }
+                    },
+                    child: const Text('Register'),
+                  ),
+                ],
               ),
-              _buildTextField(
-                controller: _placeController,
-                label: 'Place',
-                validator: (value) => value!.isEmpty ? 'Please enter the place' : null,
-              ),
-              _buildTextField(
-                controller: _talukController,
-                label: 'Taluk',
-                validator: (value) => value!.isEmpty ? 'Please enter the taluk' : null,
-              ),
-              _buildTextField(
-                controller: _districtController,
-                label: 'District',
-                validator: (value) => value!.isEmpty ? 'Please enter the district' : null,
-              ),
-              _buildTextField(
-                controller: _stateController,
-                label: 'State',
-                validator: (value) => value!.isEmpty ? 'Please enter the state' : null,
-              ),
-              _buildTextField(
-                controller: _pincodeController,
-                label: 'Pincode',
-                keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty || value.length != 6 ? 'Please enter a valid 6-digit pincode' : null,
-              ),
-              _buildTextField(
-                controller: _phoneNumberController,
-                label: 'Phone Number',
-                keyboardType: TextInputType.phone,
-                validator: (value) => value!.isEmpty || value.length != 10 ? 'Please enter a valid 10-digit phone number' : null,
-              ),
-              _buildTextField(
-                controller: _emailController,
-                label: 'Email',
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) => value!.isEmpty || !value.contains('@') ? 'Please enter a valid email address' : null,
-              ),
-              
-              _buildTextField(
-                controller: _passwordController,
-                label: 'Password',
-                obscureText: true,
-                validator: (value) => value!.isEmpty || value.length < 6 ? 'Password must be at least 6 characters long' : null,
-              ),
-              _buildTextField(
-                controller: _confirmPasswordController,
-                label: 'Confirm Password',
-                obscureText: true,
-                validator: (value) => value != _passwordController.text ? 'Passwords do not match' : null,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    submitForm();
-                  }
-                },
-                child: const Text('Register'),
-              ),
-            ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:edubridge/change_password.dart';
 import 'package:edubridge/services/user_service.dart';
@@ -21,6 +20,7 @@ class _LoginFormState extends State<LoginForm> {
 
   UserService userService = UserService();
   final storage = FlutterSecureStorage();
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -47,18 +47,14 @@ class _LoginFormState extends State<LoginForm> {
           if (response.data['exist']['usertype'] == "Student") {
             Navigator.pushNamedAndRemoveUntil(
                 context, "/student", (route) => false);
-          }
-          else if (response.data['exist']['usertype'] == "College") {
+          } else if (response.data['exist']['usertype'] == "College") {
             Navigator.pushNamedAndRemoveUntil(
                 context, "/college", (route) => false);
-          }
-          else if (response.data['exist']['usertype'] == "Sponsor") {
+          } else if (response.data['exist']['usertype'] == "Sponsor") {
             Navigator.pushNamedAndRemoveUntil(
                 context, "/sponsor", (route) => false);
-          }
-          else if (response.data['exist']['usertype'] == "Ngo") {
-            Navigator.pushNamedAndRemoveUntil(
-                context, "/ngo", (route) => false);
+          } else if (response.data['exist']['usertype'] == "Ngo") {
+            Navigator.pushNamedAndRemoveUntil(context, "/ngo", (route) => false);
           }
         } on DioException catch (e) {
           print(e.response!.data);
@@ -66,20 +62,7 @@ class _LoginFormState extends State<LoginForm> {
             SnackBar(content: Text('Error Logging User!')),
           );
         }
-
       }
-
-      //  if (_emailController.text == "admin@gmail.com") {
-      //    Navigator.pushNamedAndRemoveUntil(context, "/admin", (route) => false);
-      //  } else if (_emailController.text == "college@gmail.com") {
-      //    Navigator.pushNamedAndRemoveUntil(context, "/college", (route) => false);
-      //  } else if (_emailController.text == "student@gmail.com") {
-      //    Navigator.pushNamedAndRemoveUntil(context, "/student", (route) => false);
-      //  } else if (_emailController.text == "sponsor@gmail.com") {
-      //    Navigator.pushNamedAndRemoveUntil(context, "/sponsor", (route) => false);
-      //  } else if (_emailController.text == "ngo@gmail.com") {
-      //    Navigator.pushNamedAndRemoveUntil(context, "/ngo", (route) => false);
-      //  }
     }
   }
 
@@ -89,65 +72,80 @@ class _LoginFormState extends State<LoginForm> {
       appBar: AppBar(
         title: const Text('Login'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  if (value.length < 6) {
-                    return 'Password must be at least 6 characters long';
-                  }
-                  return null;
-                },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(labelText: 'Email'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        controller: _passwordController,
+                        decoration: const InputDecoration(labelText: 'Password'),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          if (value.length < 6) {
+                            return 'Password must be at least 6 characters long';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: _submitForm,
+                        child: const Text('Login'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ChangePassword()),
+                          );
+                        },
+                        child: const Text('Forgot Password?'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const UserTypeSelection()),
+                          );
+                        },
+                        child: const Text('Don\'t have an account? Register here'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text('Login'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ChangePassword()),
-                  );
-                },
-                child: const Text('Forgot Password?'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const UserTypeSelection()),
-                  );
-                },
-                child: const Text('Don\'t have an account? Register here'),
-              ),
-            ],
+            ),
           ),
         ),
       ),

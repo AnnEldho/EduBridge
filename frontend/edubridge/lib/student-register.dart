@@ -30,7 +30,7 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
   final _courseController = TextEditingController();
   final _yearOfEnrollmentController = TextEditingController();
   final _academicYearController = TextEditingController();
-  final _percentageController = TextEditingController();
+  final _cgpaController = TextEditingController();
   final _bankAccountNumberController = TextEditingController();
   final _bankNameController = TextEditingController();
   final _ifscCodeController = TextEditingController();
@@ -78,6 +78,7 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
       "instituition": _institutionNameController.text,
       "course": _courseController.text,
       "academic_year": _academicYearController.text,
+      "cgpa":_cgpaController.text,
       "account_number": _bankAccountNumberController.text,
       "bank_name": _bankNameController.text,
       "ifsc_code": _ifscCodeController.text,
@@ -123,7 +124,7 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
     _courseController.dispose();
     _yearOfEnrollmentController.dispose();
     _academicYearController.dispose();
-    _percentageController.dispose();
+    _cgpaController.dispose();
     _bankAccountNumberController.dispose();
     _bankNameController.dispose();
     _ifscCodeController.dispose();
@@ -161,10 +162,17 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
+        child: Card(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
               _buildTextField(
                 controller: _nameController,
                 label: 'Name',
@@ -250,12 +258,7 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter your district' : null,
               ),
-              _buildTextField(
-                controller: _stateController,
-                label: 'State',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your state' : null,
-              ),
+               
               _buildTextField(
                 controller: _nationalityController,
                 label: 'Nationality',
@@ -309,6 +312,10 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter your academic year' : null,
               ),
+              _buildTextField(controller: _cgpaController,
+               label: "CGPA",
+               validator: (value) => value!.isEmpty ? 'Please enter your CGPA' : null,
+              ),
               _buildTextField(
                 controller: _bankAccountNumberController,
                 label: 'Bank Account Number',
@@ -360,7 +367,9 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                 },
                 child: const Text('Register'),
               ),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
       ),

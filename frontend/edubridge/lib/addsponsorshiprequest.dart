@@ -93,62 +93,71 @@ class _SponsorShipRequestState extends State<SponsorShipRequest> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
-                  }
-                  return null;
-                },
+        child: Card(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: <Widget>[
+                  TextFormField(
+                    controller: _descriptionController,
+                    decoration: InputDecoration(labelText: 'Description'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a description';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _amountController,
+                    decoration: InputDecoration(labelText: 'Amount'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter an amount';
+                      }
+                      if (double.tryParse(value) == null) {
+                        return 'Please enter a valid number';
+                      }
+                      return null;
+                    },
+                  ),
+                  DropdownButtonFormField(
+                    decoration: InputDecoration(labelText: 'Sponsor'),
+                    value: _sponsoridController.text.isEmpty
+                        ? null
+                        : _sponsoridController.text,
+                    items: sponsors.map<DropdownMenuItem<String>>((sponsor) {
+                      return DropdownMenuItem<String>(
+                        value: sponsor['_id'],
+                        child: Text(sponsor['name']),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _sponsoridController.text = value as String;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a Sponsor';
+                      }
+                      return null;
+                    },
+                  ),
+                  ElevatedButton(
+                    onPressed: _submitForm,
+                    child: Text('Submit'),
+                  ),
+                ],
               ),
-              TextFormField(
-                controller: _amountController,
-                decoration: InputDecoration(labelText: 'Amount'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an amount';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
-                  return null;
-                },
-              ),
-              DropdownButtonFormField(
-                decoration: InputDecoration(labelText: 'Sponsor'),
-                value: _sponsoridController.text.isEmpty
-                    ? null
-                    : _sponsoridController.text,
-                items: sponsors.map<DropdownMenuItem<String>>((sponsor) {
-                  return DropdownMenuItem<String>(
-                    value: sponsor['_id'],
-                    child: Text(sponsor['name']),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _sponsoridController.text = value as String;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a Sponsor';
-                  }
-                  return null;
-                },
-              ),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: Text('Submit'),
-              ),
-            ],
+            ),
           ),
         ),
       ),

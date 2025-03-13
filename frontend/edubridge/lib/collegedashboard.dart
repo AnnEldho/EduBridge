@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:edubridge/addscholorship.dart';
 import 'package:edubridge/approvestudent.dart';
-import 'package:edubridge/complaint.dart';
-import 'package:edubridge/scholarship.dart';
+import 'package:edubridge/addcomplaint.dart';
 import 'package:edubridge/viewscholorship.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -71,34 +70,59 @@ class _CollegedashboardState extends State<Collegedashboard> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ScholarshipPage()),
+                  MaterialPageRoute(builder: (context) => AddScholorshipPage()),
                 );
               },
             ),
             ListTile(
-                title: Text("Complaints"),
-                leading: Icon(
-                  Icons.phone,
-                  color: Colors.black,
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ComplaintPage()),
-                  );
-                }),
+            title: Text("Approve Students"),
+            leading: Icon(
+              Icons.people,
+              color: Colors.black,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ApproveStudents()),
+              );
+            },
+            ),
             ListTile(
-                title: Text("Students"),
-                leading: Icon(
-                  Icons.person,
-                  color: Colors.black,
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ComplaintPage()),
-                  );
-                }),
+            title: Text("Approve Applicants"),
+            leading: Icon(
+              Icons.people,
+              color: Colors.black,
+            ),
+            onTap: (){
+            },
+            ),
+            ListTile(
+            leading: Icon(
+              Icons.report_problem,
+              color: Colors.black,
+            ),
+            title: const Text("Complaints "),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddComplaintPage()),
+              );
+            },
+          ),
+            ListTile(
+            leading: Icon(
+              Icons.view_list_sharp,
+              color: Colors.black,
+            ),
+            title: const Text("View Scholarship"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ViewScholorship()),
+              );
+            },
+          ),
+                
             ListTile(
               title: Text("Logout"),
               leading: Icon(
@@ -113,50 +137,7 @@ class _CollegedashboardState extends State<Collegedashboard> {
             ),
           ],
         ),
-      ),
-      body: Column(
-        children: [
-          ListTile(
-            title: Text("Approve Students"),
-            leading: Icon(
-              Icons.people,
-              color: Colors.black,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ApproveStudents()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text("Scholarship"),
-            leading: Icon(
-              Icons.school_sharp,
-              color: Colors.black,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddScholorshipPage()),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.view_list_sharp,
-              color: Colors.black,
-            ),
-            title: const Text("View Scholarship"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ViewScholorship()),
-              );
-            },
-          ),
-        ],
-      ),
+      ),  
     );
   }
 }

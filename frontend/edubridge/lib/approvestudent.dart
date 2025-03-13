@@ -93,73 +93,70 @@ class _ApproveStudentsState extends State<ApproveStudents> {
               itemCount: students.length,
               itemBuilder: (context, index) {
                 var student = students[index];
-                if (student['user_id'] != null) {
-                  return Card(
-                    margin: EdgeInsets.all(10),
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: student['user_id'] != null
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Name: ${student['user_id']['name']}',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold)),
-                                Text('Email: ${student['user_id']['email']}'),
-                                Text(
-                                    'Phone Number: ${student['user_id']['phone_number']}'),
-                                Text('Taluk: ${student['user_id']['taluk']}'),
-                                Text(
-                                    'District: ${student['user_id']['district']}'),
-                                Text('State: ${student['user_id']['state']}'),
-                                Text(
-                                    'Pincode: ${student['user_id']['pincode']}'),
-                                Text('House Name: ${student['house_name']}'),
-                                Text('DOB: ${student['dob']}'),
-                                Text('Gender: ${student['gender']}'),
-                                Text('Nationality: ${student['nationality']}'),
-                                Text(
-                                    'Aadhar Number: ${student['aadhar_number']}'),
-                                Text('Course: ${student['course']}'),
-                                Text(
-                                    'Academic Year: ${student['academic_year']}'),
-                                Text(
-                                    'Account Number: ${student['account_number']}'),
-                                Text('Bank Name: ${student['bank_name']}'),
-                                Text('Branch Name: ${student['branch_name']}'),
-                                Text('IFSC Code: ${student['ifsc_code']}'),
-                                SizedBox(height: 10),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        // Approve student logic here
-                                        updateStatus(student['user_id']['_id'],
-                                            'Approved');
-                                        getStudents();
-                                      },
-                                      child: Text('Approve'),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        // Reject student logic here
-                                        updateStatus(student['user_id']['_id'],
-                                            'Rejected');
-                                        getStudents();
-                                      },
-                                      child: Text('Reject'),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          : Container(),
-                    ),
-                  );
-                }
+                return Card(
+                  margin: EdgeInsets.all(10),
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: student['user_id'] != null
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Name: ${student['user_id']['name']}',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold)),
+                              Text('Email: ${student['user_id']['email']}'),
+                              Text(
+                                  'Phone Number: ${student['user_id']['phone_number']}'),
+                              Text('Taluk: ${student['user_id']['taluk']}'),
+                              Text(
+                                  'District: ${student['user_id']['district']}'),
+                              Text('State: ${student['user_id']['state']}'),
+                              Text('Pincode: ${student['user_id']['pincode']}'),
+                              Text('House Name: ${student['house_name']}'),
+                              Text('DOB: ${student['dob']}'),
+                              Text('Gender: ${student['gender']}'),
+                              Text('Nationality: ${student['nationality']}'),
+                              Text(
+                                  'Aadhar Number: ${student['aadhar_number']}'),
+                              Text('Course: ${student['course']}'),
+                              Text(
+                                  'Academic Year: ${student['academic_year']}'),
+                              Text(
+                                  'Account Number: ${student['account_number']}'),
+                              Text('Bank Name: ${student['bank_name']}'),
+                              Text('Branch Name: ${student['branch_name']}'),
+                              Text('IFSC Code: ${student['ifsc_code']}'),
+                              SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // Approve student logic here
+                                      updateStatus(student['user_id']['_id'],
+                                          'Approved');
+                                      getStudents();
+                                    },
+                                    child: Text('Approve'),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // Reject student logic here
+                                      updateStatus(student['user_id']['_id'],
+                                          'Rejected');
+                                      getStudents();
+                                    },
+                                    child: Text('Reject'),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        : Container(),
+                  ),
+                );
               },
             ),
     );

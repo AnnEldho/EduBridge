@@ -106,113 +106,122 @@ Future<void> submitForm() async {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              _buildTextField(
-                controller: _collegeNameController,
-                label: 'College Name',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter the college name' : null,
+        child: Card(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  _buildTextField(
+                    controller: _collegeNameController,
+                    label: 'College Name',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter the college name' : null,
+                  ),
+                  _buildTextField(
+                    controller: _placeController,
+                    label: 'Place',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter the place' : null,
+                  ),
+                  _buildTextField(
+                    controller: _talukController,
+                    label: 'Taluk',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter the taluk' : null,
+                  ),
+                  _buildTextField(
+                    controller: _districtController,
+                    label: 'District',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter the district' : null,
+                  ),
+                  _buildTextField(
+                    controller: _stateController,
+                    label: 'State',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter the state' : null,
+                  ),
+                  _buildTextField(
+                    controller: _pincodeController,
+                    label: 'Pincode',
+                    keyboardType: TextInputType.number,
+                    validator: (value) => value!.isEmpty || value.length != 6
+                        ? 'Please enter a valid 6-digit pincode'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _phoneNumberController,
+                    label: 'Phone Number',
+                    keyboardType: TextInputType.phone,
+                    validator: (value) => value!.isEmpty || value.length != 10
+                        ? 'Please enter a valid 10-digit phone number'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _emailController,
+                    label: 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) => value!.isEmpty || !value.contains('@')
+                        ? 'Please enter a valid email address'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _inchargeNameController,
+                    label: 'Incharge Name',
+                    validator: (value) => value!.isEmpty
+                        ? 'Please enter the contact person\'s name'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _inchargeEmailController,
+                    label: 'Incharge Email',
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) => value!.isEmpty || !value.contains('@')
+                        ? 'Please enter a valid email address'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _inchargePhoneController,
+                    label: 'Incharge Phone',
+                    keyboardType: TextInputType.phone,
+                    validator: (value) => value!.isEmpty || value.length != 10
+                        ? 'Please enter a valid 10-digit phone number'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _passwordController,
+                    label: 'Password',
+                    obscureText: true,
+                    validator: (value) => value!.isEmpty || value.length < 6
+                        ? 'Password must be at least 6 characters long'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _confirmPasswordController,
+                    label: 'Confirm Password',
+                    obscureText: true,
+                    validator: (value) => value != _passwordController.text
+                        ? 'Passwords do not match'
+                        : null,
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        submitForm();
+                      }
+                    },
+                    child: const Text('Register'),
+                  ),
+                ],
               ),
-              _buildTextField(
-                controller: _placeController,
-                label: 'Place',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter the place' : null,
-              ),
-              _buildTextField(
-                controller: _talukController,
-                label: 'Taluk',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter the taluk' : null,
-              ),
-              _buildTextField(
-                controller: _districtController,
-                label: 'District',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter the district' : null,
-              ),
-              _buildTextField(
-                controller: _stateController,
-                label: 'State',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter the state' : null,
-              ),
-              _buildTextField(
-                controller: _pincodeController,
-                label: 'Pincode',
-                keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty || value.length != 6
-                    ? 'Please enter a valid 6-digit pincode'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _phoneNumberController,
-                label: 'Phone Number',
-                keyboardType: TextInputType.phone,
-                validator: (value) => value!.isEmpty || value.length != 10
-                    ? 'Please enter a valid 10-digit phone number'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _emailController,
-                label: 'Email',
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) => value!.isEmpty || !value.contains('@')
-                    ? 'Please enter a valid email address'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _inchargeNameController,
-                label: 'Incharge Name',
-                validator: (value) => value!.isEmpty
-                    ? 'Please enter the contact person\'s name'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _inchargeEmailController,
-                label: 'Incharge Email',
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) => value!.isEmpty || !value.contains('@')
-                    ? 'Please enter a valid email address'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _inchargePhoneController,
-                label: 'Incharge Phone',
-                keyboardType: TextInputType.phone,
-                validator: (value) => value!.isEmpty || value.length != 10
-                    ? 'Please enter a valid 10-digit phone number'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _passwordController,
-                label: 'Password',
-                obscureText: true,
-                validator: (value) => value!.isEmpty || value.length < 6
-                    ? 'Password must be at least 6 characters long'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _confirmPasswordController,
-                label: 'Confirm Password',
-                obscureText: true,
-                validator: (value) => value != _passwordController.text
-                    ? 'Passwords do not match'
-                    : null,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    submitForm();
-                  }
-                },
-                child: const Text('Register'),
-              ),
-            ],
+            ),
           ),
         ),
       ),

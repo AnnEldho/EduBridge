@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:edubridge/addscholorship.dart';
 import 'package:edubridge/addsponsorshiprequest.dart';
+import 'package:edubridge/addcomplaint.dart';
 import 'package:edubridge/mysponsorshiprequest.dart';
 import 'package:edubridge/viewscholorship.dart';
 import 'package:flutter/material.dart';
@@ -63,33 +64,61 @@ class _NGODashboardState extends State<NGODashboard> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.people, color: Colors.black),
-                title: Text("Beneficiaries"),
+                leading: Icon(Icons.school, color: Colors.black),
+                title: Text("Add Scholarship"),
                 onTap: () {
-                  // Handle beneficiaries tap
-                },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddScholorshipPage()),
+                );
+              },
               ),
               ListTile(
-                leading: Icon(Icons.event, color: Colors.black),
-                title: Text("Events"),
+                leading: Icon(Icons.visibility, color: Colors.black),
+                title: Text("View Scholarship"),
                 onTap: () {
-                  // Handle events tap
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewScholorship()),
+                  );
                 },
+                
               ),
               ListTile(
-                leading: Icon(Icons.volunteer_activism, color: Colors.black),
-                title: Text("Volunteers"),
-                onTap: () {
-                  // Handle volunteers tap
-                },
+                leading: Icon(Icons.send, color: Colors.black),
+              title: const Text("Send Sponsorship Request"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SponsorShipRequest()),
+                );
+              },
+            ),
+              
+              ListTile(
+                leading: Icon(Icons.inbox, color: Colors.black),
+              title: const Text("My Sponsorship Request"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MySponsorshipRequest()),
+                );
+              },
               ),
               ListTile(
-                leading: Icon(Icons.settings, color: Colors.black),
-                title: Text("Settings"),
-                onTap: () {
-                  // Handle settings tap
-                },
-              ),
+            leading: Icon(
+              Icons.report_problem,
+              color: Colors.black,
+            ),
+            title: const Text("Complaints "),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddComplaintPage()),
+              );
+            },
+          ),
               ListTile(
                 title: Text("Logout"),
                 leading: Icon(
@@ -105,47 +134,7 @@ class _NGODashboardState extends State<NGODashboard> {
             ],
           ),
         ),
-        body: Column(
-          children: [
-            ListTile(
-              title: const Text("Add Scholarship"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddScholorshipPage()),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text("View Scholarship"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewScholorship()),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text("Send Sponsorship Request"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SponsorShipRequest()),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text("My Sponsorship Request"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MySponsorshipRequest()),
-                );
-              },
-            ),
-          ],
-        ));
+        );
   }
 }
 

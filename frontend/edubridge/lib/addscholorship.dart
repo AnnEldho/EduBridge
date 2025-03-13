@@ -59,10 +59,17 @@ class _AddScholorshipPageState extends State<AddScholorshipPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
+        child: Card(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
               TextFormField(
                 controller: _titleController,
                 decoration: const InputDecoration(labelText: 'Title'),
@@ -159,7 +166,9 @@ class _AddScholorshipPageState extends State<AddScholorshipPage> {
                 },
                 child: const Text('Submit'),
               ),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
       ),

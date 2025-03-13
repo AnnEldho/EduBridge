@@ -121,10 +121,17 @@ class _NGORegistrationFormState extends State<NGORegistrationForm> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
+        child: Card(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
               _buildTextField(
                 controller: _nameController,
                 label: 'Name',
@@ -249,7 +256,9 @@ class _NGORegistrationFormState extends State<NGORegistrationForm> {
                 },
                 child: const Text('Register'),
               ),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:edubridge/addcomplaint.dart';
 import 'package:edubridge/joinedscholorship.dart';
 import 'package:edubridge/viewallscholorship.dart';
 import 'package:edubridge/viewsponsorships.dart';
@@ -59,7 +60,12 @@ class _StudentdashboardState extends State<Studentdashboard> {
                 Icons.home,
                 color: Colors.black,
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Studentdashboard()),
+                );
+              },
             ),
             ListTile(
               title: Text("About"),
@@ -78,6 +84,50 @@ class _StudentdashboardState extends State<Studentdashboard> {
               onTap: () {},
             ),
             ListTile(
+              leading: Icon(Icons.school),
+              title: const Text("Scholarship"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewAllScholorship()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.manage_search_rounded),
+              title: const Text("My Scholarship"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewJoinedScholorship()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.monetization_on),
+              title: const Text("Sponsorship"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewSponsorship()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.report_problem,
+                color: Colors.black,
+              ),
+              title: const Text("Complaints "),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddComplaintPage()),
+                );
+              },
+            ),
+            ListTile(
               title: Text("Logout"),
               leading: Icon(
                 Icons.logout,
@@ -91,41 +141,6 @@ class _StudentdashboardState extends State<Studentdashboard> {
             ),
           ],
         ),
-      ),
-      body: Column(
-        children: [
-          ListTile(
-            leading: Icon(Icons.school),
-            title: const Text("Scholarship"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ViewAllScholorship()),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.manage_search_rounded),
-            title: const Text("My Scholarship"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ViewJoinedScholorship()),
-              );
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.monetization_on),
-            title: const Text("Sponsorship"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ViewSponsorship()),
-              );
-            },
-          ),
-        ],
       ),
     );
   }

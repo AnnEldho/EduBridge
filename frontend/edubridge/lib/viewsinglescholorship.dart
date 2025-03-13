@@ -82,24 +82,47 @@ class _ViewScholorShipSingleState extends State<ViewScholorShipSingle> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Center(
+                    child: Text(
+                      "${data['title']}",
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
                   Text(
-                    "Title: ${data['title']}",
+                    "Description :",
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "${data['description']}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   Text(
-                    "Description: ${data['description']}",
+                    "Amount :",
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "${data['amount'].toString()}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   Text(
-                    "Amount: ${data['amount'].toString()}",
+                    "Opening Date :",
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    " ${DateFormat.yMd().format(DateTime.parse(data['opening_date']))}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   Text(
-                    "Opening Date: ${DateFormat.yMd().format(DateTime.parse(data['opening_date']))}",
-                    style: const TextStyle(fontSize: 20),
+                    "Closing Date :",
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "Closing Date: ${DateFormat.yMd().format(DateTime.parse(data['closing_date']))}",
+                    "${DateFormat.yMd().format(DateTime.parse(data['closing_date']))}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   ElevatedButton(

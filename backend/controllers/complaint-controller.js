@@ -1,30 +1,58 @@
-const Complaint = require('../models/complaint');
-const User = require('../models/user');
-exports.RegisterComplaint = (req, res) => {
-	User.findOne({ email: req.body.email }).then((user) => {
-		if (user) {
-			let newComplaint = new Complaint(req.body);
-			newComplaint.save().then((newComplaint) => {
-				if (newComplaint) {
-					return res.status(200).json({ message: "Complaint created successfully" });
-				}
-				else {
-					return res.status(500).json({ message: "Internal error" });
-				}
-			})
-		}
-		else {
-			return res.status(400).json({ message: "User not found" });
-		}
-	})
+const Complaint=require("../models/complaint")
+
+
+exports.addComplaint=(req,res)=>{
+    let newComplaint=Complaint(req.body)
+    newComplaint.save().then((complaint)=>{
+        if(complaint){
+            return res.status(201).json(complaint)
+        }else{
+            return res.status(404).json({msg:"Error"})
+        }
+    })
 }
-exports.GetComplaint = (req, res) => {
-	Complaint.find().then((complaints) => {
-		if (complaints) {
-			return res.status(200).json({ complaints });
-		}
-		else {
-			return res.status(500).json({ message: "Internal error" });
-		}
-	})
+
+exports.getAllComplaint=(req,res)=>{
+    Complaint.find().then((complaint)=>{
+        if(complaint){
+            return res.status(201).json(complaint)
+        }else{
+            return res.status(404).json({msg:"Error"})
+        }
+    })
+}
+
+exports.getComplaintByUserid=(req,res)=>{
+    Complaint.find({userid:req.body.userid}).then((complaint)=>{
+        if(complaint){
+            return res.status(201).json(complaint)
+        }else{
+            return res.status(404).json({msg:"Error"})
+        }
+    })
+}
+
+exports.getComplaintById=(req,res)=>{
+    Complaint.findOne({_id:req.body.complaintid}).then((complaint)=>{
+        if(complaint){
+            return res.status(201).json(complaint)
+        }else{
+            return res.status(404).json({msg:"Error"})
+        }
+    })
+}
+
+exports.addReplyToComplaint=(req,res)=>{
+    Complaint.updateOne({_id:req.body.complaintid},{
+        $set:{
+            reply:req.body.reply,
+            status:"Replied"
+        }
+    }).then((complaint)=>{
+        if(complaint){
+            return res.status(201).json(complaint)
+        }else{
+            return res.status(404).json({msg:"Error"})
+        }
+    })
 }
