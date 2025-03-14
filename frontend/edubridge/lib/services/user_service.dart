@@ -176,10 +176,32 @@ class UserService {
         data: {"sponsorshipid": sponsorshipId});
     return response;
   }
-
   //complaint
-  addcomplaint(String complaintData) async {
-    final response = await dio.post("${url}addComplaint", data: complaintData);
+
+  addComplaint(String details) async {
+    final response = await dio.post("${url}addComplaint", data: details);
+    return response;
+  }
+
+  getAllComplaint() async {
+    final response = await dio.post("${url}getAllComplaint");
+    return response;
+  }
+
+  getComplaintByUserid(String userid) async {
+    final response =
+        await dio.post("${url}getComplaintByUserid", data: {"userid": userid});
+    return response;
+  }
+
+  getComplaintById(String complaintid) async {
+    final response = await dio
+        .post("${url}getComplaintById", data: {"complaintid": complaintid});
+    return response;
+  }
+
+  addReplyToComplaint(String details) async {
+    final response = await dio.post("${url}addReplyToComplaint", data: details);
     return response;
   }
 }

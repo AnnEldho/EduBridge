@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:edubridge/services/user_service.dart';
+import 'package:edubridge/viewmycomplaints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -30,7 +31,7 @@ class _AddComplaintPageState extends State<AddComplaintPage> {
       "userid": userMap['_id'],
     });
     try {
-      final response = await _userService.addcomplaint(complaintData);
+      final response = await _userService.addComplaint(complaintData);
       print(response.data);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Complaint added successfully"),

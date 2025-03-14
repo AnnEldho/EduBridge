@@ -13,6 +13,7 @@ exports.addComplaint=(req,res)=>{
 }
 
 exports.getAllComplaint=(req,res)=>{
+    console.log("Get All Complaint")
     Complaint.find().then((complaint)=>{
         if(complaint){
             return res.status(201).json(complaint)
@@ -23,6 +24,7 @@ exports.getAllComplaint=(req,res)=>{
 }
 
 exports.getComplaintByUserid=(req,res)=>{
+    console.log(req.body)   
     Complaint.find({userid:req.body.userid}).then((complaint)=>{
         if(complaint){
             return res.status(201).json(complaint)

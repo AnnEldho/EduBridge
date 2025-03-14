@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:edubridge/addcomplaint.dart';
 import 'package:edubridge/joinedscholorship.dart';
 import 'package:edubridge/viewallscholorship.dart';
+import 'package:edubridge/viewmycomplaints.dart';
 import 'package:edubridge/viewsponsorships.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -124,6 +125,19 @@ class _StudentdashboardState extends State<Studentdashboard> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AddComplaintPage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.report_problem,
+                color: Colors.black,
+              ),
+              title: const Text(" My Complaints "),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewMyComplaint()),
                 );
               },
             ),
