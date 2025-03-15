@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:edubridge/change_password.dart';
+import 'package:edubridge/forgot_password.dart';
 import 'package:edubridge/services/user_service.dart';
 import 'package:edubridge/usertypes.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,8 @@ class _LoginFormState extends State<LoginForm> {
             Navigator.pushNamedAndRemoveUntil(
                 context, "/sponsor", (route) => false);
           } else if (response.data['exist']['usertype'] == "Ngo") {
-            Navigator.pushNamedAndRemoveUntil(context, "/ngo", (route) => false);
+            Navigator.pushNamedAndRemoveUntil(
+                context, "/ngo", (route) => false);
           }
         } on DioException catch (e) {
           print(e.response!.data);
@@ -104,7 +106,8 @@ class _LoginFormState extends State<LoginForm> {
                       const SizedBox(height: 10),
                       TextFormField(
                         controller: _passwordController,
-                        decoration: const InputDecoration(labelText: 'Password'),
+                        decoration:
+                            const InputDecoration(labelText: 'Password'),
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -126,7 +129,8 @@ class _LoginFormState extends State<LoginForm> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ChangePassword()),
+                                builder: (context) =>
+                                    const ForgotpasswordPage()),
                           );
                         },
                         child: const Text('Forgot Password?'),
@@ -136,10 +140,12 @@ class _LoginFormState extends State<LoginForm> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const UserTypeSelection()),
+                                builder: (context) =>
+                                    const UserTypeSelection()),
                           );
                         },
-                        child: const Text('Don\'t have an account? Register here'),
+                        child:
+                            const Text('Don\'t have an account? Register here'),
                       ),
                     ],
                   ),

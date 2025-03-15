@@ -204,4 +204,10 @@ class UserService {
     final response = await dio.post("${url}addReplyToComplaint", data: details);
     return response;
   }
+
+  //add notifications
+  addNotification(String details) async {
+    final response = await dio.post("${url}addNotification", data: details);
+    return response;
+  }
 }

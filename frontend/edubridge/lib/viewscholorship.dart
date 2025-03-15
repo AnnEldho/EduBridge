@@ -50,37 +50,46 @@ class _ViewScholorshipState extends State<ViewScholorship> {
       appBar: AppBar(
         title: const Text('View Scholarship'),
       ),
-      body: ListView.builder(
-        itemCount: scholarships.length,
-        itemBuilder: (context, index) {
-          var openingDate = DateTime.parse(scholarships[index]['opening_date']);
-          var closingDate = DateTime.parse(scholarships[index]['closing_date']);
-          var formattedOpeningDate =
-              "${openingDate.day}/${openingDate.month}/${openingDate.year}";
-          var formattedClosingDate =
-              "${closingDate.day}/${closingDate.month}/${closingDate.year}";
+      body: scholarships.isEmpty
+          ? const Center(
+              child: Text(
+                "No scholarships available",
+                style: TextStyle(fontSize: 18),
+              ),
+            )
+          : ListView.builder(
+              itemCount: scholarships.length,
+              itemBuilder: (context, index) {
+                var openingDate =
+                    DateTime.parse(scholarships[index]['opening_date']);
+                var closingDate =
+                    DateTime.parse(scholarships[index]['closing_date']);
+                var formattedOpeningDate =
+                    "${openingDate.day}/${openingDate.month}/${openingDate.year}";
+                var formattedClosingDate =
+                    "${closingDate.day}/${closingDate.month}/${closingDate.year}";
 
-          return ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SingleScholarShip(
-                    id: scholarships[index]['_id'],
-                  ),
-                ),
-              );
-            },
-            title: Text(scholarships[index]['title']),
-            subtitle: Text(scholarships[index]['description'] +
-                "\n" +
-                formattedOpeningDate +
-                " to " +
-                formattedClosingDate),
-            trailing: Text(scholarships[index]['amount'].toString()),
-          );
-        },
-      ),
+                return ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SingleScholarShip(
+                          id: scholarships[index]['_id'],
+                        ),
+                      ),
+                    );
+                  },
+                  title: Text(scholarships[index]['title']),
+                  subtitle: Text(scholarships[index]['description'] +
+                      "\n" +
+                      formattedOpeningDate +
+                      " to " +
+                      formattedClosingDate),
+                  trailing: Text(scholarships[index]['amount'].toString()),
+                );
+              },
+            ),
     );
   }
 }

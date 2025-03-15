@@ -23,7 +23,7 @@ const sponsorShipJoinSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: "Joined"
+        
     },
     datetime: {
         type: Date,
