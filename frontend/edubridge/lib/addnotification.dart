@@ -1,6 +1,8 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:edubridge/services/user_service.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -61,22 +63,24 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                 children: [
                   TextFormField(
                     controller: _titleController,
-                    decoration:
-                        const InputDecoration(labelText: 'Notification Title'),
+                    decoration: const InputDecoration(labelText: ' Title'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a notification title';
+                        return 'Please enter a  title';
+                      }
+                      if (value.length < 3 || value.length > 30) {
+                        return 'Title must be between 3 and 30 characters';
                       }
                       return null;
                     },
                   ),
                   TextFormField(
                     controller: _descriptionController,
-                    decoration: const InputDecoration(
-                        labelText: 'Notification Description'),
+                    decoration:
+                        const InputDecoration(labelText: ' Description'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter a notification description';
+                        return 'Please enter a  description';
                       }
                       return null;
                     },

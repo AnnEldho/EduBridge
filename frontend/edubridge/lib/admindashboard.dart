@@ -1,4 +1,4 @@
-import 'package:edubridge/add_notifications.dart';
+import 'package:edubridge/addnotification.dart';
 import 'package:edubridge/college_list.dart';
 import 'package:edubridge/ngo-register.dart';
 import 'package:edubridge/sponsor_list.dart';

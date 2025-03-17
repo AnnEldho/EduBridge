@@ -12,12 +12,7 @@ var notificationSchema = new mongoose.Schema({
 	datetime: {
 		type: Date,
 		default: Date.now
-	},
-	user_id: {
-		type: Schema.Types.ObjectId,
-		ref: 'User',
-		required: true,
-	},
+	}
 });
 module.exports = mongoose.model('Notification', notificationSchema);
     

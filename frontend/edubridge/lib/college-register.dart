@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:edubridge/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -28,13 +27,17 @@ class _CollegeRegistrationFormState extends State<CollegeRegistrationForm> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-UserService userService=UserService();
-Future<void> submitForm() async {
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
+  UserService userService = UserService();
+
+  Future<void> submitForm() async {
     var userdata = jsonEncode({
-      "name":_collegeNameController.text,
+      "name": _collegeNameController.text,
       "email": _emailController.text,
-      "phone_number":_phoneNumberController.text,
-      "place":_placeController.text,
+      "phone_number": _phoneNumberController.text,
+      "place": _placeController.text,
       "taluk": _talukController.text,
       "district": _districtController.text,
       "state": _stateController.text,
@@ -42,24 +45,27 @@ Future<void> submitForm() async {
       "password": _passwordController.text,
       "confirm_password": _confirmPasswordController.text,
       "usertype": "College",
-      "incharge_name":_inchargeNameController.text,
-      "incharge_email":_inchargeEmailController.text,
-      "incharge_phone":_inchargePhoneController.text
+      "incharge_name": _inchargeNameController.text,
+      "incharge_email": _inchargeEmailController.text,
+      "incharge_phone": _inchargePhoneController.text
     });
+
     print(userdata);
+
     try {
       final response = await userService.registerUser(userdata);
       print(response.data);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration Successful!')),
+        const SnackBar(content: Text('Registration Successful!')),
       );
     } on DioException catch (e) {
       print(e.response!.data);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error Registering User!')),
+        const SnackBar(content: Text('Error Registering User!')),
       );
     }
   }
+
   @override
   void dispose() {
     _collegeNameController.dispose();
@@ -75,7 +81,6 @@ Future<void> submitForm() async {
     _inchargePhoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-
     super.dispose();
   }
 
@@ -85,12 +90,17 @@ Future<void> submitForm() async {
     TextInputType keyboardType = TextInputType.text,
     bool obscureText = false,
     String? Function(String?)? validator,
+    Widget? suffixIcon,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
-        decoration: InputDecoration(labelText: label),
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
+          suffixIcon: suffixIcon,
+        ),
         keyboardType: keyboardType,
         obscureText: obscureText,
         validator: validator,
@@ -197,7 +207,17 @@ Future<void> submitForm() async {
                   _buildTextField(
                     controller: _passwordController,
                     label: 'Password',
-                    obscureText: true,
+                    obscureText: !_isPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(_isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                     validator: (value) => value!.isEmpty || value.length < 6
                         ? 'Password must be at least 6 characters long'
                         : null,
@@ -205,7 +225,18 @@ Future<void> submitForm() async {
                   _buildTextField(
                     controller: _confirmPasswordController,
                     label: 'Confirm Password',
-                    obscureText: true,
+                    obscureText: !_isConfirmPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(_isConfirmPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _isConfirmPasswordVisible =
+                              !_isConfirmPasswordVisible;
+                        });
+                      },
+                    ),
                     validator: (value) => value != _passwordController.text
                         ? 'Passwords do not match'
                         : null,

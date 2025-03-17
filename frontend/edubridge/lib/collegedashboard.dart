@@ -17,17 +17,19 @@ class _CollegedashboardState extends State<Collegedashboard> {
   final storage = FlutterSecureStorage();
   String name = "";
   String email = "";
+  bool isApproved = false;
+
   getUser() async {
-    print("Getting User");
     Map<String, String> allValues = await storage.readAll();
     var user = allValues['user'];
-    print(user);
-    var userMap = jsonDecode(user!);
-    print(userMap);
-    setState(() {
-      name = userMap['name'];
-      email = userMap['email'];
-    });
+    if (user != null) {
+      var userMap = jsonDecode(user);
+      setState(() {
+        name = userMap['name'];
+        email = userMap['email'];
+        isApproved = userMap['status'] == 'Approved';
+      });
+    }
   }
 
   @override
@@ -48,87 +50,69 @@ class _CollegedashboardState extends State<Collegedashboard> {
               accountEmail: Text(email),
               currentAccountPicture: CircleAvatar(
                 child: Text(
-                  name.length > 0 ? name[0] : "",
+                  name.isNotEmpty ? name[0] : "",
                   style: TextStyle(fontSize: 40),
                 ),
               ),
             ),
-            ListTile(
-              title: Text("Home"),
-              leading: Icon(
-                Icons.home,
-                color: Colors.black,
+            if (isApproved) ...[
+              ListTile(
+                title: Text("Scholarship"),
+                leading: Icon(Icons.school_sharp),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddScholorshipPage()),
+                  );
+                },
               ),
-              onTap: () {},
-            ),
-            ListTile(
-              title: Text("Scholarship"),
-              leading: Icon(
-                Icons.school_sharp,
-                color: Colors.black,
+              ListTile(
+                title: Text("Approve Students"),
+                leading: Icon(Icons.people),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ApproveStudents()),
+                  );
+                },
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddScholorshipPage()),
-                );
-              },
-            ),
-            ListTile(
-            title: Text("Approve Students"),
-            leading: Icon(
-              Icons.people,
-              color: Colors.black,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ApproveStudents()),
-              );
-            },
-            ),
-            ListTile(
-            title: Text("Approve Applicants"),
-            leading: Icon(
-              Icons.people,
-              color: Colors.black,
-            ),
-            onTap: (){
-            },
-            ),
-            ListTile(
-            leading: Icon(
-              Icons.report_problem,
-              color: Colors.black,
-            ),
-            title: const Text("Complaints "),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddComplaintPage()),
-              );
-            },
-          ),
-            ListTile(
-            leading: Icon(
-              Icons.view_list_sharp,
-              color: Colors.black,
-            ),
-            title: const Text("View Scholarship"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ViewScholorship()),
-              );
-            },
-          ),
-                
+              ListTile(
+                title: Text("Complaints"),
+                leading: Icon(Icons.report_problem),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddComplaintPage()),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text("View Scholarship"),
+                leading: Icon(Icons.view_list_sharp),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewScholorship()),
+                  );
+                },
+              ),
+            ] else ...[
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "Your college is not approved yet. Please wait for approval .",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red),
+                ),
+              ),
+            ],
             ListTile(
               title: Text("Logout"),
-              leading: Icon(
-                Icons.logout,
-                color: Colors.black,
-              ),
+              leading: Icon(Icons.logout),
               onTap: () async {
                 await storage.delete(key: "user");
                 Navigator.of(context).pushNamedAndRemoveUntil(
@@ -137,7 +121,7 @@ class _CollegedashboardState extends State<Collegedashboard> {
             ),
           ],
         ),
-      ),  
+      ),
     );
   }
 }

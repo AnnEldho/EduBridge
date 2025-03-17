@@ -18,6 +18,7 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
 
   UserService userService = UserService();
   final storage = FlutterSecureStorage();
@@ -106,9 +107,22 @@ class _LoginFormState extends State<LoginForm> {
                       const SizedBox(height: 10),
                       TextFormField(
                         controller: _passwordController,
-                        decoration:
-                            const InputDecoration(labelText: 'Password'),
-                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
+                        ),
+                        obscureText: !_isPasswordVisible,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your password';

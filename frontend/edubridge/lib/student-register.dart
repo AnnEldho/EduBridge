@@ -78,7 +78,7 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
       "instituition": _institutionNameController.text,
       "course": _courseController.text,
       "academic_year": _academicYearController.text,
-      "cgpa":_cgpaController.text,
+      "cgpa": _cgpaController.text,
       "account_number": _bankAccountNumberController.text,
       "bank_name": _bankNameController.text,
       "ifsc_code": _ifscCodeController.text,
@@ -173,200 +173,206 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
               key: _formKey,
               child: ListView(
                 children: [
-              _buildTextField(
-                controller: _nameController,
-                label: 'Name',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your  name' : null,
-              ),
-              GestureDetector(
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime.now(),
-                  );
-                  if (pickedDate != null) {
-                    setState(() {
-                      _dobController.text =
-                          "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-                    });
-                  }
-                },
-                child: AbsorbPointer(
-                  child: _buildTextField(
-                    controller: _dobController,
-                    label: 'Date of Birth',
-                    keyboardType: TextInputType.datetime,
-                    validator: (value) => value!.isEmpty
-                        ? 'Please enter your date of birth'
+                  _buildTextField(
+                    controller: _nameController,
+                    label: 'Name',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter your  name' : null,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now(),
+                      );
+                      if (pickedDate != null) {
+                        setState(() {
+                          _dobController.text =
+                              "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                        });
+                      }
+                    },
+                    child: AbsorbPointer(
+                      child: _buildTextField(
+                        controller: _dobController,
+                        label: 'Date of Birth',
+                        keyboardType: TextInputType.datetime,
+                        validator: (value) => value!.isEmpty
+                            ? 'Please enter your date of birth'
+                            : null,
+                      ),
+                    ),
+                  ),
+                  DropdownButtonFormField<String>(
+                    decoration: InputDecoration(labelText: 'Gender'),
+                    value: _genderController.text.isEmpty
+                        ? null
+                        : _genderController.text,
+                    items: ['Male', 'Female', 'Other'].map((String gender) {
+                      return DropdownMenuItem<String>(
+                        value: gender,
+                        child: Text(gender),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _genderController.text = newValue!;
+                      });
+                    },
+                    validator: (value) =>
+                        value == null ? 'Please select your gender' : null,
+                  ),
+                  _buildTextField(
+                    controller: _emailController,
+                    label: 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) => value!.isEmpty || !value.contains('@')
+                        ? 'Please enter a valid email address'
                         : null,
                   ),
-                ),
-              ),
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: 'Gender'),
-                value: _genderController.text.isEmpty
-                    ? null
-                    : _genderController.text,
-                items: ['Male', 'Female', 'Other'].map((String gender) {
-                  return DropdownMenuItem<String>(
-                    value: gender,
-                    child: Text(gender),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _genderController.text = newValue!;
-                  });
-                },
-                validator: (value) =>
-                    value == null ? 'Please select your gender' : null,
-              ),
-              _buildTextField(
-                controller: _emailController,
-                label: 'Email',
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) => value!.isEmpty || !value.contains('@')
-                    ? 'Please enter a valid email address'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _phoneController,
-                label: 'Phone',
-                keyboardType: TextInputType.phone,
-                validator: (value) => value!.isEmpty || value.length != 10
-                    ? 'Please enter a valid 10-digit phone number'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _houseNameController,
-                label: 'House Name',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your house name' : null,
-              ),
-              _buildTextField(
-                controller: _talukController,
-                label: 'Taluk',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your taluk' : null,
-              ),
-              _buildTextField(
-                controller: _districtController,
-                label: 'District',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your district' : null,
-              ),
-               
-              _buildTextField(
-                controller: _nationalityController,
-                label: 'Nationality',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your nationality' : null,
-              ),
-              _buildTextField(
-                controller: _pincodeController,
-                label: 'Pincode',
-                keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty || value.length != 6
-                    ? 'Please enter a valid 6-digit pincode'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _aadharNumberController,
-                label: 'Aadhar Number',
-                keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty || value.length != 12
-                    ? 'Please enter a valid 12-digit Aadhar number'
-                    : null,
-              ),
-              DropdownButtonFormField(
-                decoration: InputDecoration(labelText: 'Institution Name'),
-                value: _institutionNameController.text.isEmpty
-                    ? null
-                    : _institutionNameController.text,
-                items: collegeList.map<DropdownMenuItem<String>>((college) {
-                  return DropdownMenuItem<String>(
-                    value: college['user']['_id'],
-                    child: Text(college['user']['name']),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _institutionNameController.text = value as String;
-                  });
-                },
-                validator: (value) =>
-                    value == null ? 'Please select your institution' : null,
-              ),
-              _buildTextField(
-                controller: _courseController,
-                label: 'Course',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your course' : null,
-              ),
-              _buildTextField(
-                controller: _academicYearController,
-                label: 'Academic Year',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your academic year' : null,
-              ),
-              _buildTextField(controller: _cgpaController,
-               label: "CGPA",
-               validator: (value) => value!.isEmpty ? 'Please enter your CGPA' : null,
-              ),
-              _buildTextField(
-                controller: _bankAccountNumberController,
-                label: 'Bank Account Number',
-                keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty
-                    ? 'Please enter your bank account number'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _bankNameController,
-                label: 'Bank Name',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your bank name' : null,
-              ),
-              _buildTextField(
-                controller: _ifscCodeController,
-                label: 'IFSC Code',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your IFSC code' : null,
-              ),
-              _buildTextField(
-                controller: _branchNameController,
-                label: 'Branch Name',
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter your branch name' : null,
-              ),
-              _buildTextField(
-                controller: _passwordController,
-                label: 'Password',
-                obscureText: true,
-                validator: (value) => value!.isEmpty || value.length < 6
-                    ? 'Password must be at least 6 characters long'
-                    : null,
-              ),
-              _buildTextField(
-                controller: _confirmPasswordController,
-                label: 'Confirm Password',
-                obscureText: true,
-                validator: (value) => value != _passwordController.text
-                    ? 'Passwords do not match'
-                    : null,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    submitForm();
-                  }
-                },
-                child: const Text('Register'),
-              ),
+                  _buildTextField(
+                    controller: _phoneController,
+                    label: 'Phone',
+                    keyboardType: TextInputType.phone,
+                    validator: (value) => value!.isEmpty || value.length != 10
+                        ? 'Please enter a valid 10-digit phone number'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _houseNameController,
+                    label: 'House Name',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter your house name' : null,
+                  ),
+                  _buildTextField(
+                    controller: _talukController,
+                    label: 'Taluk',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter your taluk' : null,
+                  ),
+                  _buildTextField(
+                    controller: _districtController,
+                    label: 'District',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter your district' : null,
+                  ),
+                  _buildTextField(
+                    controller: _nationalityController,
+                    label: 'Nationality',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter your nationality' : null,
+                  ),
+                  _buildTextField(
+                    controller: _pincodeController,
+                    label: 'Pincode',
+                    keyboardType: TextInputType.number,
+                    validator: (value) => value!.isEmpty || value.length != 6
+                        ? 'Please enter a valid 6-digit pincode'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _aadharNumberController,
+                    label: 'Aadhar Number',
+                    keyboardType: TextInputType.number,
+                    validator: (value) => value!.isEmpty || value.length != 12
+                        ? 'Please enter a valid 12-digit Aadhar number'
+                        : null,
+                  ),
+                  DropdownButtonFormField(
+                    decoration: InputDecoration(labelText: 'Institution Name'),
+                    value: _institutionNameController.text.isEmpty
+                        ? null
+                        : _institutionNameController.text,
+                    items: collegeList
+                        .where((college) =>
+                            college['user']['status'] ==
+                            'Approved') // Filtering
+                        .map<DropdownMenuItem<String>>((college) {
+                      return DropdownMenuItem<String>(
+                        value: college['user']['_id'],
+                        child: Text(college['user']['name']),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _institutionNameController.text = value as String;
+                      });
+                    },
+                    validator: (value) =>
+                        value == null ? 'Please select your institution' : null,
+                  ),
+                  _buildTextField(
+                    controller: _courseController,
+                    label: 'Course',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter your course' : null,
+                  ),
+                  _buildTextField(
+                    controller: _academicYearController,
+                    label: 'Academic Year',
+                    validator: (value) => value!.isEmpty
+                        ? 'Please enter your academic year'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _cgpaController,
+                    label: "CGPA",
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter your CGPA' : null,
+                  ),
+                  _buildTextField(
+                    controller: _bankAccountNumberController,
+                    label: 'Bank Account Number',
+                    keyboardType: TextInputType.number,
+                    validator: (value) => value!.isEmpty
+                        ? 'Please enter your bank account number'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _bankNameController,
+                    label: 'Bank Name',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter your bank name' : null,
+                  ),
+                  _buildTextField(
+                    controller: _ifscCodeController,
+                    label: 'IFSC Code',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter your IFSC code' : null,
+                  ),
+                  _buildTextField(
+                    controller: _branchNameController,
+                    label: 'Branch Name',
+                    validator: (value) =>
+                        value!.isEmpty ? 'Please enter your branch name' : null,
+                  ),
+                  _buildTextField(
+                    controller: _passwordController,
+                    label: 'Password',
+                    obscureText: true,
+                    validator: (value) => value!.isEmpty || value.length < 6
+                        ? 'Password must be at least 6 characters long'
+                        : null,
+                  ),
+                  _buildTextField(
+                    controller: _confirmPasswordController,
+                    label: 'Confirm Password',
+                    obscureText: true,
+                    validator: (value) => value != _passwordController.text
+                        ? 'Passwords do not match'
+                        : null,
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        submitForm();
+                      }
+                    },
+                    child: const Text('Register'),
+                  ),
                 ],
               ),
             ),

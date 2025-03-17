@@ -19,23 +19,18 @@ class _ViewScholorShipSingleState extends State<ViewScholorShipSingle> {
   dynamic data;
   final storage = FlutterSecureStorage();
 
-  Future<void> joinScholorship() async {
+  Future<void> changeScholarshipStatus(String id, String status) async {
     Map<String, String> allValues = await storage.readAll();
-    var user = allValues['user'];
-    print(user);
-    var userMap = jsonDecode(user!);
-    var jsonData = jsonEncode({
-      "scholorshipid": widget.id,
-      "userid": userMap["_id"],
-      "providerid": data['userid']
-    });
+    print("applied");
+    var data = jsonEncode({"id": id, "status": status});
+
     try {
-      final response = await _userService.joinScholarship(jsonData);
+      final response = await _userService.changeScholarshipStatus(data);
       print(response.data);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Scholarship applied successfully"),
-        duration: Duration(milliseconds: 3000),
+        content: Text("Status updated successfully"),
         backgroundColor: Colors.green,
+        duration: Duration(seconds: 2),
       ));
     } on DioException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -126,10 +121,12 @@ class _ViewScholorShipSingleState extends State<ViewScholorShipSingle> {
                     style: const TextStyle(fontSize: 20),
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        joinScholorship();
-                      },
-                      child: Text("Apply"))
+                    onPressed: () {
+                      changeScholarshipStatus(data['_id'].toString(),
+                          "approved"); // Convert to String
+                    },
+                    child: Text("Apply"),
+                  )
                 ],
               ),
             ),

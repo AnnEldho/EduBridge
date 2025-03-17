@@ -15,6 +15,7 @@ const StateRoutes = require("./routes/state-routes");
 const DistrictRoutes = require("./routes/district-routes");
 const TalukRoutes = require("./routes/taluk-routes");
 const ComplaintRoutes = require("./routes/complaint-routes");
+const NotificationRoutes = require("./routes/notification-routes");
 
 //DB Connection
 mongoose
@@ -40,6 +41,8 @@ app.use("/api", StateRoutes);
 app.use("/api", DistrictRoutes);
 app.use("/api", TalukRoutes);
 app.use("/api", ComplaintRoutes);
+app.use("/api", NotificationRoutes);
+
 
 //PORT
 const port = process.env.PORT || 8000;

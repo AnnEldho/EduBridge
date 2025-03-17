@@ -70,102 +70,104 @@ class _AddScholorshipPageState extends State<AddScholorshipPage> {
               key: _formKey,
               child: ListView(
                 children: [
-              TextFormField(
-                controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  if (value.length < 3 || value.length > 30) {
-                    return 'Title must be between 3 and 30 characters';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(labelText: 'Description'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _amountController,
-                decoration: const InputDecoration(labelText: 'Amount'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an amount';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _openingDateController,
-                decoration: const InputDecoration(labelText: 'Opening Date'),
-                readOnly: true,
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime(2101),
-                  );
-                  if (pickedDate != null) {
-                    setState(() {
-                      _openingDateController.text =
-                          pickedDate.toString().split(' ')[0];
-                    });
-                  }
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an opening date';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _closingDateController,
-                decoration: const InputDecoration(labelText: 'Closing Date'),
-                readOnly: true,
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime(2101),
-                  );
-                  if (pickedDate != null) {
-                    setState(() {
-                      _closingDateController.text =
-                          pickedDate.toString().split(' ')[0];
-                    });
-                  }
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a closing date';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    subitScholorship();
-                  }
-                },
-                child: const Text('Submit'),
-              ),
+                  TextFormField(
+                    controller: _titleController,
+                    decoration: const InputDecoration(labelText: 'Title'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a title';
+                      }
+                      if (value.length < 3 || value.length > 30) {
+                        return 'Title must be between 3 and 30 characters';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(labelText: 'Description'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a description';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _amountController,
+                    decoration: const InputDecoration(labelText: 'Amount'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter an amount';
+                      }
+                      if (double.tryParse(value) == null) {
+                        return 'Please enter a valid number';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _openingDateController,
+                    decoration:
+                        const InputDecoration(labelText: 'Opening Date'),
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2101),
+                      );
+                      if (pickedDate != null) {
+                        setState(() {
+                          _openingDateController.text =
+                              pickedDate.toString().split(' ')[0];
+                        });
+                      }
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter an opening date';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _closingDateController,
+                    decoration:
+                        const InputDecoration(labelText: 'Closing Date'),
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2101),
+                      );
+                      if (pickedDate != null) {
+                        setState(() {
+                          _closingDateController.text =
+                              pickedDate.toString().split(' ')[0];
+                        });
+                      }
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a closing date';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        subitScholorship();
+                      }
+                    },
+                    child: const Text('Submit'),
+                  ),
                 ],
               ),
             ),

@@ -78,6 +78,12 @@ class UserService {
     return response;
   }
 
+  changeScholarshipStatus(String scholarshipData) async {
+    final response =
+        await dio.put("${url}change-scholarship-status", data: scholarshipData);
+    return response;
+  }
+
   joinScholarship(String scholarshipData) async {
     final response =
         await dio.post("${url}join-scholarship", data: scholarshipData);
@@ -206,8 +212,20 @@ class UserService {
   }
 
   //add notifications
+
   addNotification(String details) async {
     final response = await dio.post("${url}addNotification", data: details);
+    return response;
+  }
+
+  getAllNotifications() async {
+    final response = await dio.get("${url}getAllNotifications");
+    return response;
+  }
+
+  getNotificationById(String notificationid) async {
+    final response = await dio.get("${url}getNotificationById",
+        data: {"notificationid": notificationid});
     return response;
   }
 }

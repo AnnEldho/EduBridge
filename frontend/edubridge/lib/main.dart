@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false, // Hides the "Debug" banner
         title: 'EduBridge',
         theme: ThemeData(
           appBarTheme: const AppBarTheme(
