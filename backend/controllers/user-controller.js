@@ -232,29 +232,28 @@ exports.getSponsorList = (req,res) => {
     }).catch((err) => {
         return res.status(500).json({ message: "Internal error", error: err });
     });
-}
+};
 // Add the changePassword function here
-exports.changePassword = (req, res) => {
-    const { email, oldPassword, newPassword } = req.body;
+
+exports.forgotPassword = (req, res) => {
+    const { email, newPassword } = req.body;
 
     User.findOne({ email: email }).then((user) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        if (user.password !== oldPassword) {
-            return res.status(400).json({ message: "Old password is incorrect" });
-        }
-
         user.password = newPassword;
         user.save().then((updatedUser) => {
-            return res.status(200).json({ message: "Password changed successfully" });
+            return res.status(200).json({ message: "Password reset successfully" });
         }).catch((err) => {
             return res.status(500).json({ message: "Internal error", error: err });
         });
     }).catch((err) => {
         return res.status(500).json({ message: "Internal error", error: err });
     });
+};
+
 
     exports.getUserData = (req, res) => {
         const { userId } = req.params;
@@ -295,6 +294,36 @@ exports.changePassword = (req, res) => {
             return res.status(500).json({ message: "Internal error", error: err });
         });
     };
+
+    exports.checkEmail = (req, res) => {
+        const { email } = req.body;
+        User.findOne({ email: email }).then((user) => {
+            if (user) {
+                return res.status(200).json({ message: "Email exists" });
+            } else {
+                return res.status(404).json({ message: "Email not found" });
+            }
+        }
+        ).catch((err) => {
+            return res.status(500).json({ message: "Internal error", error: err });
+        });
+    };
+
+    exports.resetPassword = (req, res) => {
+        const { email, newPassword } = req.body;
+        User.findOne({ email: email }).then((user) => {
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            user.password = newPassword;
+            user.save().then((updatedUser) => {
+                return res.status(200).json({ message: "Password reset successfully" });
+            }).catch((err) => {
+                return res.status(500).json({ message: "Internal error", error: err });
+            });
+        }).catch((err) => {
+            return res.status(500).json({ message: "Internal error", error: err });
+        });
+    };
  
 
-}

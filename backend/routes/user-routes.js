@@ -8,5 +8,7 @@ router.get('/getpendingcollege', userController.getPendingCollege);
 router.get('/getcollegelist', userController.getCollegeList);
 router.get('/getsponsorlist', userController.getSponsorList);
 router.post('/updatestatus', userController.updateStatus);
-router.post('/changepassword', userController.changePassword);
+router.post('/forgotpassword', userController.forgotPassword);
+router.post('/checkemail', userController.checkEmail);
+router.post('/resetpassword', userController.resetPassword);
 module.exports = router;

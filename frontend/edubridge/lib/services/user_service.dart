@@ -79,8 +79,8 @@ class UserService {
   }
 
   changeScholarshipStatus(String scholarshipData) async {
-    final response =
-        await dio.put("${url}change-scholarship-status", data: scholarshipData);
+    final response = await dio.post("${url}change-scholarship-status",
+        data: scholarshipData);
     return response;
   }
 
@@ -228,4 +228,22 @@ class UserService {
         data: {"notificationid": notificationid});
     return response;
   }
+
+  //password
+  forgotPassword(String email) async {
+    final response = await dio.post("${url}forgotpassword", data: {"email": email});
+    return response;
+  }
+
+checkEmail(String email) async {
+    final response = await dio.post("${url}checkemail", data: {"email": email});
+    return response;
+  }
+
+  resetPassword(String email, String newPassword) async {
+    final response = await dio.post("${url}resetpassword",
+        data: {"email": email, "newPassword": newPassword});
+    return response;
+  }
 }
+
