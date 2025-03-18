@@ -49,9 +49,8 @@ exports.ViewScholorShipById=(req,res)=>{
 }
 // change status of scholorship
 exports.ChangeScholorshipStatus=(req,res)=>{
-    ScholarshipJoin.update
-
-    ({scholorshipid:req.body.scholorshipid},{$set:{status:req.body.status}}).then((scholorshipjoin)=>{
+    console.log(req.body);
+    ScholarshipJoin.updateOne({scholorshipid:req.body.scholorshipid},{$set:{status:req.body.status}}).then((scholorshipjoin)=>{
         if(scholorshipjoin){
             return res.status(200).json({message:"Status changed successfully"});
         }

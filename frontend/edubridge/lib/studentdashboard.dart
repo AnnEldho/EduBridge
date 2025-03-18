@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:edubridge/addcomplaint.dart';
+import 'package:edubridge/addsponsorshiprequest.dart';
 import 'package:edubridge/joinedscholorship.dart';
 import 'package:edubridge/viewallnotification.dart';
 import 'package:edubridge/viewallscholorship.dart';
@@ -100,12 +101,13 @@ class _StudentdashboardState extends State<Studentdashboard> {
                 },
               ),
               ListTile(
-                title: Text("Sponsorship"),
-                leading: Icon(Icons.monetization_on, color: Colors.black),
+                leading: Icon(Icons.send, color: Colors.black),
+                title: const Text("Send Sponsorship Request"),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ViewSponsorship()),
+                    MaterialPageRoute(
+                        builder: (context) => SponsorShipRequest()),
                   );
                 },
               ),
@@ -119,6 +121,7 @@ class _StudentdashboardState extends State<Studentdashboard> {
                   );
                 },
               ),
+
               ListTile(
                 title: Text("My Complaints"),
                 leading: Icon(Icons.report_problem, color: Colors.black),

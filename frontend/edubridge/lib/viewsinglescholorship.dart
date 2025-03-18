@@ -19,18 +19,23 @@ class _ViewScholorShipSingleState extends State<ViewScholorShipSingle> {
   dynamic data;
   final storage = FlutterSecureStorage();
 
-  Future<void> changeScholarshipStatus(String id, String status) async {
+  Future<void> joinScholorship() async {
     Map<String, String> allValues = await storage.readAll();
-    print("applied");
-    var data = jsonEncode({"id": id, "status": status});
-
+    var user = allValues['user'];
+    print(user);
+    var userMap = jsonDecode(user!);
+    var jsonData = jsonEncode({
+      "scholorshipid": widget.id,
+      "userid": userMap["_id"],
+      "providerid": data['userid']
+    });
     try {
-      final response = await _userService.changeScholarshipStatus(data);
+      final response = await _userService.joinScholarship(jsonData);
       print(response.data);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Status updated successfully"),
+        content: Text("Scholarship applied successfully"),
+        duration: Duration(milliseconds: 3000),
         backgroundColor: Colors.green,
-        duration: Duration(seconds: 2),
       ));
     } on DioException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -77,56 +82,31 @@ class _ViewScholorShipSingleState extends State<ViewScholorShipSingle> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: Text(
-                      "${data['title']}",
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
                   Text(
-                    "Description :",
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "${data['description']}",
+                    "Title: ${data['title']}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   Text(
-                    "Amount :",
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "${data['amount'].toString()}",
+                    "Description: ${data['description']}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   Text(
-                    "Opening Date :",
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    " ${DateFormat.yMd().format(DateTime.parse(data['opening_date']))}",
+                    "Amount: ${data['amount'].toString()}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   Text(
-                    "Closing Date :",
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                    "Opening Date: ${DateFormat.yMd().format(DateTime.parse(data['opening_date']))}",
+                    style: const TextStyle(fontSize: 20),
                   ),
                   Text(
-                    "${DateFormat.yMd().format(DateTime.parse(data['closing_date']))}",
+                    "Closing Date: ${DateFormat.yMd().format(DateTime.parse(data['closing_date']))}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      changeScholarshipStatus(data['_id'].toString(),
-                          "approved"); // Convert to String
-                    },
-                    child: Text("Apply"),
-                  )
+                      onPressed: () {
+                        joinScholorship();
+                      },
+                      child: Text("Apply"))
                 ],
               ),
             ),

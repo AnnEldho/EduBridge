@@ -46,6 +46,28 @@ class _SingleScholarShipState extends State<SingleScholarShip> {
     }
   }
 
+  Future<void> changeScholarshipStatus(String id, String status) async {
+    var jsonData = jsonEncode({"scholorshipid": id, "status": status});
+    try {
+      final response = await _userService.changeScholarshipStatus(jsonData);
+      print(response.data);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Status Changed Successfully"),
+        duration: Duration(milliseconds: 3000),
+        backgroundColor: Colors.green,
+      ));
+      setState(() {
+        data['status'] = status;
+      });
+    } on DioException catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Error occurred,please try again"),
+        duration: Duration(milliseconds: 3000),
+      ));
+    }
+  }
+
   Future<void> getScholarship() async {
     try {
       final response = await _userService.viewScholarshipById(widget.id);
@@ -155,6 +177,27 @@ class _SingleScholarShipState extends State<SingleScholarShip> {
                               Text("Status: ${scholarship['status']}"),
                               Text(
                                   "Date: ${DateFormat.yMd().add_jm().format(DateTime.parse(scholarship['datetime']))}"),
+                              if (scholarship['status'] == 'Applied')
+                                Row(
+                                  children: [
+                                    RawMaterialButton(
+                                      onPressed: () {
+                                        changeScholarshipStatus(
+                                            widget.id, "Approved");
+                                      },
+                                      fillColor: Colors.green,
+                                      child: Text("Approve"),
+                                    ),
+                                    RawMaterialButton(
+                                      onPressed: () {
+                                        changeScholarshipStatus(
+                                            widget.id, "Rejected");
+                                      },
+                                      fillColor: Colors.red,
+                                      child: Text("Reject"),
+                                    )
+                                  ],
+                                )
                             ],
                           ),
                         ),
