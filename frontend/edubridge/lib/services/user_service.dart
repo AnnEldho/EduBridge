@@ -231,11 +231,12 @@ class UserService {
 
   //password
   forgotPassword(String email) async {
-    final response = await dio.post("${url}forgotpassword", data: {"email": email});
+    final response =
+        await dio.post("${url}forgotpassword", data: {"email": email});
     return response;
   }
 
-checkEmail(String email) async {
+  checkEmail(String email) async {
     final response = await dio.post("${url}checkemail", data: {"email": email});
     return response;
   }
@@ -245,5 +246,41 @@ checkEmail(String email) async {
         data: {"email": email, "newPassword": newPassword});
     return response;
   }
+
+  verifyPassword(String password, String confirmPassword) async {
+    final response =
+        await dio.post("${url}verifypassword", data: {"password": password});
+    return response;
+  }
+
+  //update
+  updateEmail(String email, String userid) async {
+    final response =
+        await dio.put("${url}updateemail", data: {"email": email, "userid": userid});
+    return response;
+  }
+
+  updatePhoneNumber(int phone, String userid) async {
+    final response = await dio.put("${url}updatephonenumber",
+        data: {"phone": phone, "userid": userid});
+    return response;
+  }
+
+  updatePassword(String password, String userid) async {
+    final response = await dio.put("${url}updatepassword",
+        data: {"password": password, "userid": userid});
+    return response;
+  }
+
+  findUser(String email) async {
+    final response = await dio.post("${url}finduser", data: {"email": email});
+    return response;
+  }
+
+  getUser(String userid) async {
+    final response = await dio.get("${url}getuser", data: {"userid": userid});
+    return response;
+  }
+  
 }
 

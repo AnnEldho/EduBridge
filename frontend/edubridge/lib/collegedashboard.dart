@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:edubridge/addscholorship.dart';
 import 'package:edubridge/approvestudent.dart';
 import 'package:edubridge/addcomplaint.dart';
+import 'package:edubridge/college_profile.dart';
 import 'package:edubridge/viewscholorship.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -56,6 +57,16 @@ class _CollegedashboardState extends State<Collegedashboard> {
               ),
             ),
             if (isApproved) ...[
+              ListTile(
+                title: Text("Edit Profile"),
+                leading: Icon(Icons.school_sharp),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
+                },
+              ),
               ListTile(
                 title: Text("Scholarship"),
                 leading: Icon(Icons.school_sharp),

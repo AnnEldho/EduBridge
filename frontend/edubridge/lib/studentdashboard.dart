@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:edubridge/addcomplaint.dart';
 import 'package:edubridge/addsponsorshiprequest.dart';
+import 'package:edubridge/change_password.dart';
 import 'package:edubridge/joinedscholorship.dart';
 import 'package:edubridge/viewallnotification.dart';
 import 'package:edubridge/viewallscholorship.dart';
@@ -129,6 +130,16 @@ class _StudentdashboardState extends State<Studentdashboard> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ViewMyComplaint()),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text("Change Password"),
+                leading: Icon(Icons.manage_search_rounded, color: Colors.black),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChangePassword()),
                   );
                 },
               ),
