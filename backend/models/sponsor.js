@@ -6,6 +6,10 @@ var sponsorSchema=new mongoose.Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 		required: true,
-	}
+	},
+	idproof: {
+		type: String,
+		required: true,
+	},
 });
 module.exports=mongoose.model('Sponsor',sponsorSchema);

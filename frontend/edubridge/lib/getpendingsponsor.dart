@@ -89,6 +89,16 @@ class _GetPendingSponsorState extends State<GetPendingSponsor> {
                         Text('State: ${user['state']}'),
                         Text('Pincode: ${user['pincode']}'),
                         Text('Status: ${user['status']}'),
+                        Image.memory(
+                          base64Decode(pendingSponsor[index]['sponsor']
+                                  ['idproof']
+                              .split(',')[1]),
+                          fit: BoxFit.contain,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return const Icon(Icons.image, size: 200);
+                          },
+                        ),
                         SizedBox(height: 10),
                         ElevatedButton(
                           onPressed: () {

@@ -61,7 +61,11 @@ var studentSchema = new mongoose.Schema({
 	ifsc_code: {
 		type: String,
 		required: true,
-	}
+	},
+    idproof: {
+        type: String,
+        required: true,
+    },
 });
 
 module.exports = mongoose.model('Student', studentSchema);

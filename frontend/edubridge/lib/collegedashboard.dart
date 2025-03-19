@@ -61,10 +61,10 @@ class _CollegedashboardState extends State<Collegedashboard> {
                 title: Text("Edit Profile"),
                 leading: Icon(Icons.school_sharp),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfilePage()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => ProfilePage()),
+                  // );
                 },
               ),
               ListTile(

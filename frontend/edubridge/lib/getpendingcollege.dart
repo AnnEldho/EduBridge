@@ -84,9 +84,9 @@ class _GetPendingCollegeState extends State<GetPendingCollege> {
                         Text('College Name: ${user['name']}',
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold)),
-                        SizedBox(height:5),
-                        Text('Incharge Name: ${college['incharge_name']}'), 
-                        Text('Incharge Email: ${college['incharge_email']}'), 
+                        SizedBox(height: 5),
+                        Text('Incharge Name: ${college['incharge_name']}'),
+                        Text('Incharge Email: ${college['incharge_email']}'),
                         Text('Incharge Phone: ${college['incharge_phone']}'),
                         SizedBox(height: 10),
                         Text('User Email: ${user['email']}'),
@@ -97,6 +97,14 @@ class _GetPendingCollegeState extends State<GetPendingCollege> {
                         Text('State: ${user['state']}'),
                         Text('Pincode: ${user['pincode']}'),
                         Text('Status: ${user['status']}'),
+                        Image.memory(
+                          base64Decode(college['idproof'].split(',')[1]),
+                          fit: BoxFit.contain,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return const Icon(Icons.image, size: 200);
+                          },
+                        ),
                         SizedBox(height: 10),
                         ElevatedButton(
                           onPressed: () {
@@ -106,7 +114,7 @@ class _GetPendingCollegeState extends State<GetPendingCollege> {
                           child: Text('Approve'),
                         ),
                         ElevatedButton(
-                          onPressed: ()  {
+                          onPressed: () {
                             changeStatus(pendingCollege[index]["user"]['_id'],
                                 'Rejected', index);
                           },

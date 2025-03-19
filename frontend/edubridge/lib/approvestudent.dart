@@ -127,6 +127,14 @@ class _ApproveStudentsState extends State<ApproveStudents> {
                               Text('Bank Name: ${student['bank_name']}'),
                               Text('Branch Name: ${student['branch_name']}'),
                               Text('IFSC Code: ${student['ifsc_code']}'),
+                              Image.memory(
+                                base64Decode(student['idproof'].split(',')[1]),
+                                fit: BoxFit.contain,
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace? stackTrace) {
+                                  return const Icon(Icons.image, size: 200);
+                                },
+                              ),
                               SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment:
@@ -154,7 +162,7 @@ class _ApproveStudentsState extends State<ApproveStudents> {
                               ),
                             ],
                           )
-                        : Container(),
+                        : null,
                   ),
                 );
               },

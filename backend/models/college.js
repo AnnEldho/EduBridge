@@ -18,6 +18,10 @@ var collegeSchema= new mongoose.Schema({
 	incharge_phone:{
 		type:String,
 		required:true,
+	},
+	idproof:{
+		type:String,
+		required:true,
 	}
 })
 module.exports= mongoose.model('College',collegeSchema);
