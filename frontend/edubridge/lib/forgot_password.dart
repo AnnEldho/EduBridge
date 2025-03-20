@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:edubridge/services/user_service.dart';
 import 'package:edubridge/widgets/textbox_widget.dart';
@@ -23,71 +22,16 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
   bool _hidePassword2 = true;
   final UserService _userService = UserService();
 
-  String? validateEmail(String? value) {
-    String pattern = r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$';
-    RegExp regExp = RegExp(pattern);
-    if (value!.isEmpty) {
-      return 'Email is required';
-    } else if (!regExp.hasMatch(value)) {
-      return 'Invalid email';
-    } else {
-      return null;
-    }
-  }
-
-  String? validatePassword(String? value) {
-    String pattern =
-        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$';
-    RegExp regex = RegExp(pattern);
-    if (!regex.hasMatch(value!)) {
-      return 'Password must have at least one uppercase, one lowercase, one number and one special character, and minimum 8 characters long.';
-    } else {
-      return null;
-    }
-  }
-
-  String? validateConfirmPassword(String? value) {
-    if (value != password.text) {
-      return 'Passwords do not match';
-    } else {
-      return null;
-    }
-  }
-
-  Future<void> forgotPassword(String email, String newPassword) async {
-    try {
-      final response = await _userService.resetPassword(email, newPassword);
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Password reset successful')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to reset password')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to reset password: $e')),
-      );
-    }
-  }
-
-  Future<bool> checkEmailExists(String email) async {
-    try {
-      final response = await _userService.checkEmail(email);
-      return response.statusCode == 200;
-    } catch (e) {
-      return false;
-    }
-  }
-
   Future<void> _submitForm() async {
     if (_formKey1.currentState!.validate()) {
-      bool emailExists = await checkEmailExists(_emailController.text);
+      bool emailExists = await _userService.checkEmail(_emailController.text);
       if (emailExists) {
         if (_formKey2.currentState!.validate()) {
-          await forgotPassword(_emailController.text, password.text);
+          await _userService.resetPassword(
+              _emailController.text, password.text);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Password reset successful')),
+          );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -102,9 +46,10 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Forgot Password'),
+        backgroundColor: const Color.fromARGB(255, 101, 121, 220),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(5),
         children: [
           const SizedBox(height: 250),
           const Center(
@@ -113,7 +58,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
+                color: Color.fromARGB(255, 101, 121, 220),
               ),
               textAlign: TextAlign.center,
             ),
@@ -124,23 +69,32 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
             child: Form(
               key: _formKey1,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CustomTextBox(
+                  TextFormField(
                     controller: _emailController,
-                    labelText: 'Email',
-                    keyboardType: TextInputType.emailAddress,
-                    prefixIcon: Icons.email,
-                    validator: validateEmail,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color.fromARGB(255, 198, 188, 188),
+                      labelText: 'Email',
+                      labelStyle: const TextStyle(color: Colors.white),
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
                   ),
+                  const SizedBox(height: 15),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey1.currentState!.validate()) {
-                          _submitForm();
-                        }
-                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 101, 121, 220),
+                      ),
+                      onPressed: _submitForm,
                       child: const Text("Submit"),
                     ),
                   ),
@@ -157,15 +111,17 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                   TextFormField(
                     controller: password,
                     decoration: InputDecoration(
-                      errorMaxLines: 200,
+                      filled: true,
+                      fillColor: const Color.fromARGB(255, 198, 188, 188),
                       labelText: 'New Password',
-                      prefixIcon: const Icon(Icons.lock),
+                      labelStyle: const TextStyle(color: Colors.white),
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                      ),
                       suffixIcon: IconButton(
-                        icon: Icon(
-                          _hidePassword1
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
+                        icon: Icon(_hidePassword1
+                            ? Icons.visibility_off
+                            : Icons.visibility),
                         onPressed: () {
                           setState(() {
                             _hidePassword1 = !_hidePassword1;
@@ -174,24 +130,26 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
                       ),
                     ),
-                    validator: validatePassword,
                     obscureText: _hidePassword1,
                   ),
                   const SizedBox(height: 15),
                   TextFormField(
                     controller: confirmpassword,
                     decoration: InputDecoration(
-                      errorMaxLines: 200,
+                      filled: true,
+                      fillColor: const Color.fromARGB(255, 198, 188, 188),
                       labelText: 'Confirm New Password',
-                      prefixIcon: const Icon(Icons.lock),
+                      labelStyle: const TextStyle(color: Colors.white),
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                      ),
                       suffixIcon: IconButton(
-                        icon: Icon(
-                          _hidePassword2
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
+                        icon: Icon(_hidePassword2
+                            ? Icons.visibility_off
+                            : Icons.visibility),
                         onPressed: () {
                           setState(() {
                             _hidePassword2 = !_hidePassword2;
@@ -200,20 +158,20 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
                       ),
                     ),
-                    validator: validateConfirmPassword,
                     obscureText: _hidePassword2,
                   ),
                   const SizedBox(height: 15),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey2.currentState!.validate()) {
-                          _submitForm();
-                        }
-                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 101, 121, 220),
+                      ),
+                      onPressed: _submitForm,
                       child: const Text("Submit"),
                     ),
                   ),

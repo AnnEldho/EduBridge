@@ -11,6 +11,8 @@ class UserTypeSelection extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Select User Type'),
+        backgroundColor:
+            const Color.fromARGB(255, 101, 121, 220), // Match theme
       ),
       body: Center(
         child: Padding(
@@ -21,21 +23,21 @@ class UserTypeSelection extends StatelessWidget {
               _buildUserTypeCard(
                 context,
                 'College',
-                Icons.school,
+                Icons.school, // College Icon
                 const CollegeRegistrationForm(),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               _buildUserTypeCard(
                 context,
                 'Students',
-                Icons.person,
+                Icons.person, // Student Icon
                 const StudentRegistrationForm(),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               _buildUserTypeCard(
                 context,
                 'Sponsors',
-                Icons.business,
+                Icons.business, // Sponsor Icon
                 const SponsorRegistrationForm(),
               ),
             ],
@@ -45,9 +47,11 @@ class UserTypeSelection extends StatelessWidget {
     );
   }
 
-  Widget _buildUserTypeCard(BuildContext context, String title, IconData icon, Widget destination) {
+  Widget _buildUserTypeCard(
+      BuildContext context, String title, IconData icon, Widget destination) {
     return Card(
-      elevation: 5,
+      elevation: 3,
+      color: const Color.fromARGB(255, 255, 180, 68),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -59,23 +63,34 @@ class UserTypeSelection extends StatelessWidget {
           );
         },
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Icon
               Icon(
                 icon,
-                size: 50,
-                color: Colors.black,
+                size: 30, // Reduced icon size
+                color: const Color.fromARGB(255, 101, 121, 220),
               ),
-              const SizedBox(width: 20),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+              const SizedBox(width: 12),
+
+              // Title Text
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16, // Reduced font size
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
                 ),
+              ),
+
+              // Arrow Icon
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: Color.fromARGB(255, 101, 121, 220),
+                size: 18, // Smaller arrow
               ),
             ],
           ),
