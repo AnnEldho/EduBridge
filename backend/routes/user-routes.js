@@ -12,9 +12,6 @@ router.post('/forgotpassword', userController.forgotPassword);
 router.post('/checkemail', userController.checkEmail);
 router.post('/resetpassword', userController.resetPassword);
 router.post('/verifypassword', userController.verifyPassword);
+
 router.post('/finduser', userController.findUser);
-router.post('/updatephonenumber', userController.updatePhoneNumber);
-router.post('/updateemail', userController.updateEmail);
-router.post('/updatepassword', userController.updatePassword);
-router.post('/finduserbyemail', userController.findUserByEmail);
 module.exports = router;

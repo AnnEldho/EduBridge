@@ -126,7 +126,7 @@ class _ViewComplaintsSingleState extends State<ViewComplaintsSingle> {
                   maxLines: 5,
                   validator: (p0) {
                     if (p0!.isEmpty) {
-                      return "Please Enter somthing";
+                      return "Please Enter something";
                     }
                   },
                 ),
@@ -141,14 +141,12 @@ class _ViewComplaintsSingleState extends State<ViewComplaintsSingle> {
               SizedBox(
                 height: 10,
               ),
-              DescriptionText(
-                  text: "Status: " + _data["status"],
+                DescriptionText(
+                  text: "Status: ${_data["status"]}",
                   align: TextAlign.left,
                   color: Colors.black),
-              DescriptionText(
-                  text: DateTime.fromMicrosecondsSinceEpoch(
-                          int.parse(_data["timestamp"]) * 1000)
-                      .toString(),
+                DescriptionText(
+                  text: "Date: ${DateTime.fromMicrosecondsSinceEpoch(int.parse(_data["timestamp"]) * 1000)}",
                   align: TextAlign.left,
                   color: Colors.black),
             ]),

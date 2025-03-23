@@ -344,70 +344,15 @@ exports.forgotPassword = (req, res) => {
         });
     };
 
-    exports.findUser=(req,res)=>{
-        console.log(req.body)
-        User.findOne({_id:new ObjectId(req.body.userid)}).then((user)=>{
-            if(!user){
-                return res.status(404).json({error:"User not found"})
+    exports.findUser = (req, res) => {
+        const { email } = req.body
+        User.findOne({_id:new ObjectId(req.body.userid)}).then((user) => {
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
             }
-            else if(user){
-                return res.status(201).json(user)
-            }
-    
-        })
+            return res.status(200).json({ user });
+        }
+        ).catch((err) => {
+            return res.status(500).json({ message: "Internal error", error: err });
+        });
     }
-
-    exports.updatePhoneNumber=(req,res)=>{
-        User.updateOne({_id:req.body.userid},{
-            $set:{
-                phone:req.body.phone
-            }
-        }).then((user)=>{
-            if(!user){
-                return res.status(404).json({error:"User not found"})
-            }
-            else if(user){
-                return res.status(201).json(user)
-            }
-        })
-    }
-    exports.updateEmail=(req,res)=>{
-        User.updateOne({_id:req.body.userid},{
-            $set:{
-                email:req.body.email
-            }
-        }).then((user)=>{
-            if(!user){
-                return res.status(404).json({error:"User not found"})
-            }
-            else if(user){
-                return res.status(201).json(user)
-            }
-        })
-    }
-    exports.updatePassword=(req,res)=>{
-        User.updateOne({_id:req.body.userid},{
-            $set:{
-                password:req.body.password
-            }
-        }).then((user)=>{
-            if(!user){
-                return res.status(404).json({error:"User not found"})
-            }
-            else if(user){
-                return res.status(201).json(user)
-            }
-        })
-    }
-    exports.findUserByEmail=(req,res)=>{
-        User.findOne({email:req.body.email}).then((user)=>{
-            if(!user){
-                return res.status(404).json({error:"User not found"})
-            }
-            else if(user){
-                return res.status(201).json(user)
-            }
-    
-        })
-    }
-

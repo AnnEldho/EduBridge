@@ -73,7 +73,7 @@ class _LoginFormState extends State<LoginForm> {
             color: Colors.white.withOpacity(0.4),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,8 +83,8 @@ class _LoginFormState extends State<LoginForm> {
                   child: Text(
                     'Login to Continue',
                     style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w600,
                       color: Color.fromARGB(255, 101, 121, 220),
                     ),
                   ),

@@ -42,97 +42,116 @@ class _CollegedashboardState extends State<Collegedashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('College Dashboard')),
+      appBar: AppBar(
+        title: Text('College Dashboard'),
+        backgroundColor: const Color.fromARGB(
+            255, 101, 121, 220), // Change this to your desired color
+      ),
       drawer: Drawer(
         child: Column(
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text(name),
-              accountEmail: Text(email),
+              accountName: Text(
+                name,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              accountEmail: Text(
+                email,
+                style: TextStyle(fontSize: 14),
+              ),
               currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
                 child: Text(
                   name.isNotEmpty ? name[0] : "",
-                  style: TextStyle(fontSize: 40),
-                ),
-              ),
-            ),
-            if (isApproved) ...[
-              ListTile(
-                title: Text("Edit Profile"),
-                leading: Icon(Icons.school_sharp),
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => ProfilePage()),
-                  // );
-                },
-              ),
-              ListTile(
-                title: Text("Scholarship"),
-                leading: Icon(Icons.school_sharp),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddScholorshipPage()),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text("Approve Students"),
-                leading: Icon(Icons.people),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ApproveStudents()),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text("Complaints"),
-                leading: Icon(Icons.report_problem),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddComplaintPage()),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text("View Scholarship"),
-                leading: Icon(Icons.view_list_sharp),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ViewScholorship()),
-                  );
-                },
-              ),
-            ] else ...[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  "Your college is not approved yet. Please wait for approval .",
-                  textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red),
+                    fontSize: 40,
+                    color: Color.fromARGB(255, 101, 121, 220),
+                  ),
                 ),
               ),
-            ],
-            ListTile(
-              title: Text("Logout"),
-              leading: Icon(Icons.logout),
-              onTap: () async {
-                await storage.delete(key: "user");
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/login', (Route<dynamic> route) => false);
-              },
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 101, 121, 220),
+              ),
             ),
+            Expanded(
+              child: ListView(
+                children: [
+                  if (isApproved) ...[
+                    _buildDrawerItem(Icons.school_sharp, "Edit Profile", () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                      );
+                    }),
+                    _buildDrawerItem(Icons.school_sharp, "Scholarship", () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddScholorshipPage()),
+                      );
+                    }),
+                    _buildDrawerItem(Icons.people, "Approve Students", () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ApproveStudents()),
+                      );
+                    }),
+                    _buildDrawerItem(Icons.report_problem, "Complaints", () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddComplaintPage()),
+                      );
+                    }),
+                    _buildDrawerItem(Icons.view_list_sharp, "View Scholarship",
+                        () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ViewScholorship()),
+                      );
+                    }),
+                  ] else ...[
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "Your college is not approved yet. Please wait for approval.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            const Divider(),
+            _buildDrawerItem(Icons.logout, "Logout", () async {
+              await storage.delete(key: "user");
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login', (Route<dynamic> route) => false);
+            }, iconColor: Colors.red),
+            const SizedBox(height: 10),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildDrawerItem(IconData icon, String title, VoidCallback onTap,
+      {Color iconColor = Colors.black}) {
+    return ListTile(
+      leading: Icon(icon, color: iconColor),
+      title: Text(title,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+      onTap: onTap,
+    );
+  }
+
+  void _navigateTo(BuildContext context, Widget page) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 }

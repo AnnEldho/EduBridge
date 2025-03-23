@@ -109,13 +109,13 @@ class _CollegeRegistrationFormState extends State<CollegeRegistrationForm> {
     super.dispose();
   }
 
-  Widget _buildTextField({
+ Widget _buildTextField({
     required TextEditingController controller,
     required String label,
     TextInputType keyboardType = TextInputType.text,
     bool obscureText = false,
-    String? Function(String?)? validator,
     Widget? suffixIcon,
+    String? Function(String?)? validator,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -123,12 +123,17 @@ class _CollegeRegistrationFormState extends State<CollegeRegistrationForm> {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
+          labelStyle: TextStyle(
+              color: const Color.fromARGB(
+                  255, 101, 121, 220)), // Change label color
           border: OutlineInputBorder(),
           suffixIcon: suffixIcon,
         ),
         keyboardType: keyboardType,
         obscureText: obscureText,
         validator: validator,
+        style: TextStyle(
+            color: const Color.fromARGB(255, 12, 12, 12)), // Change text color
       ),
     );
   }

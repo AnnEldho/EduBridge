@@ -101,16 +101,26 @@ class _SponsorRegistrationFormState extends State<SponsorRegistrationForm> {
     required String label,
     TextInputType keyboardType = TextInputType.text,
     bool obscureText = false,
+    Widget? suffixIcon,
     String? Function(String?)? validator,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
-        decoration: InputDecoration(labelText: label),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+              color: const Color.fromARGB(
+                  255, 101, 121, 220)), // Change label color
+          border: OutlineInputBorder(),
+          suffixIcon: suffixIcon,
+        ),
         keyboardType: keyboardType,
         obscureText: obscureText,
         validator: validator,
+        style: TextStyle(
+            color: const Color.fromARGB(255, 12, 12, 12)), // Change text color
       ),
     );
   }
@@ -204,18 +214,11 @@ class _SponsorRegistrationFormState extends State<SponsorRegistrationForm> {
                               decoration: BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
-                                    color: Colors.grey,
+                                    color: const Color.fromARGB(255, 101, 121,
+                                        220), // Changed color to blue
                                     width: 1.0,
                                   ),
                                 ),
-                                // border: Border.fromBorderSide(BorderSide(
-                                //     style: BorderStyle.solid,
-
-                                //     color: Theme.of(context).primaryColor)),
-
-                                // borderRadius:
-                                //const BorderRadius.all(Radius.elliptical(30)
-                                // )
                               ),
                               child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -225,12 +228,18 @@ class _SponsorRegistrationFormState extends State<SponsorRegistrationForm> {
                                   ),
                                   Icon(
                                     Icons.image,
-                                    color: Colors.grey,
+                                    color: Color.fromARGB(255, 101, 121,
+                                        220), // Changed color to blue
                                   ),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text("Upload ID Proof")
+                                  Text(
+                                    "Upload ID Proof",
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 101, 121,
+                                            220)), // Changed color to blue
+                                  ),
                                 ],
                               ),
                             )),

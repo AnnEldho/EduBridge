@@ -18,6 +18,7 @@ class _ViewAllNotificationState extends State<ViewAllNotification> {
 
   List<dynamic> _data = [];
   bool isLoading = false;
+
   String formatDateTime(String? dateTimeString) {
     if (dateTimeString == null || dateTimeString.isEmpty) {
       return "No Date";
@@ -25,32 +26,27 @@ class _ViewAllNotificationState extends State<ViewAllNotification> {
     try {
       DateTime parsedDate = DateTime.parse(dateTimeString);
       return DateFormat('dd MMM yyyy, hh:mm a').format(parsedDate);
-      // Example: 15 Mar 2025, 08:30 PM
     } catch (e) {
       return "Invalid Date";
     }
   }
 
   Future<void> getAllNotifications() async {
-    if (!mounted) return; // Prevent calling setState if widget is not in tree
+    if (!mounted) return;
 
-    setState(() {
-      isLoading = true;
-    });
+    setState(() => isLoading = true);
 
     try {
       final Response res = await userService.getAllNotifications();
       if (mounted) {
         setState(() {
-          _data = res.data ?? []; // Ensure _data is always a list
+          _data = res.data ?? [];
           isLoading = false;
         });
       }
-    } on DioException catch (e) {
+    } on DioException {
       if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
+        setState(() => isLoading = false);
       }
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -58,7 +54,6 @@ class _ViewAllNotificationState extends State<ViewAllNotification> {
           duration: Duration(seconds: 2),
         ),
       );
-      debugPrint("Error: ${e.message}");
     }
   }
 
@@ -71,42 +66,114 @@ class _ViewAllNotificationState extends State<ViewAllNotification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("All Notifications")),
+      appBar: AppBar(
+        title: const Text("All Notifications"),
+        centerTitle: true,
+        backgroundColor: Colors.blueAccent,
+        elevation: 4,
+      ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : _data.isEmpty
-              ? const Center(child: Text("No Notifications"))
-              : ListView.builder(
-                  padding: const EdgeInsets.all(10),
-                  itemCount: _data.length,
-                  itemBuilder: (context, index) {
-                    final notification = _data[index] ?? {}; // Ensure not null
-                    return ListTile(
-                      title: Text(notification['title'] ?? "No Title"),
-                      subtitle:
-                          Text(notification['description'] ?? "No Description"),
-                      trailing: Text(formatDateTime(_data[index]['datetime'])),
-                      onTap: () {
-                        if (notification["_id"] != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ViewNotificationSingle(
-                                notificationid: notification["_id"],
+              ? const Center(
+                  child: Text(
+                    "No Notifications",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                )
+              : Column(
+                  children: [
+                    Flexible(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(12),
+                        itemCount: _data.length,
+                        itemBuilder: (context, index) {
+                          final notification = _data[index] ?? {};
+                          return GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                        notification['title'] ?? "No Title"),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          notification['description'] ??
+                                              "No Description",
+                                          style: const TextStyle(fontSize: 16),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          formatDateTime(
+                                              notification['datetime']),
+                                          style: const TextStyle(
+                                              color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("Close"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Card(
+                              margin: const EdgeInsets.symmetric(vertical: 8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              color: Color.fromARGB(255, 255, 180, 68),
+                              elevation: 5,
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.all(16),
+                                title: Text(
+                                  notification['title'] ?? "No Title",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: notification['isOpened'] == true
+                                        ? const Color.fromARGB(255, 0, 0, 0)
+                                        : const Color.fromARGB(
+                                            255, 101, 121, 220),
+                                  ),
+                                ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.only(top: 5),
+                                  child: Text(
+                                    notification['description'] ??
+                                        "No Description",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                trailing: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      formatDateTime(notification['datetime']),
+                                      style: const TextStyle(
+                                          color: Color.fromARGB(255, 0, 0, 0)),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Invalid Notification"),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
-                        }
-                      },
-                    );
-                  },
+                        },
+                      ),
+                    ),
+                  ],
                 ),
     );
   }

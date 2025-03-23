@@ -12,7 +12,7 @@ class ViewNotificationSingle extends StatefulWidget {
 }
 
 class _ViewNotificationSingleState extends State<ViewNotificationSingle> {
-  UserService _userService = UserService();
+  final UserService _userService = UserService();
   dynamic _data;
   bool isloading = false;
 
@@ -25,7 +25,6 @@ class _ViewNotificationSingleState extends State<ViewNotificationSingle> {
     try {
       final Response res =
           await _userService.getNotificationById(widget.notificationid);
-      print(res.data);
       if (mounted) {
         setState(() {
           _data = res.data;
@@ -36,10 +35,16 @@ class _ViewNotificationSingleState extends State<ViewNotificationSingle> {
       setState(() {
         isloading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Error occurred, please try again"),
-        duration: Duration(milliseconds: 300),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Error occurred, please try again.",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 
@@ -52,42 +57,66 @@ class _ViewNotificationSingleState extends State<ViewNotificationSingle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Notification Details")),
+      appBar: AppBar(
+        title: const Text("Notification Details"),
+        backgroundColor: Colors.blueAccent,
+        centerTitle: true,
+        elevation: 4,
+      ),
       body: isloading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+          ? const Center(child: CircularProgressIndicator())
           : _data == null
               ? const Center(
-                  child: Text("No Notification Found"),
+                  child: Text(
+                    "No Notification Found",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
                 )
               : Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Title :",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                  padding: const EdgeInsets.all(20),
+                  child: Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Title:",
+                            style: TextStyle(
+                              fontSize: 22, // Changed font size
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          SubHeadingText(
+                            text: _data["title"],
+                            align: TextAlign.left,
+                            color: Colors.black87,
+                          ),
+                          const SizedBox(height: 15),
+                          Text(
+                            "Description:",
+                            style: TextStyle(
+                              fontSize: 22, // Changed font size
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          DescriptionText(
+                            text: _data["description"],
+                            align: TextAlign.justify,
+                            color: Colors.black87,
+                          ),
+                        ],
                       ),
-                      SubHeadingText(
-                        text: _data["title"],
-                        align: TextAlign.left,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        "Description :",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      DescriptionText(
-                        text: _data["description"],
-                        align: TextAlign.justify,
-                        color: Colors.black,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
     );

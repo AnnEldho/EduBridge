@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:edubridge/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -165,16 +164,26 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
     required String label,
     TextInputType keyboardType = TextInputType.text,
     bool obscureText = false,
+    Widget? suffixIcon,
     String? Function(String?)? validator,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
-        decoration: InputDecoration(labelText: label),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+              color: const Color.fromARGB(
+                  255, 101, 121, 220)), // Change label color
+          border: OutlineInputBorder(),
+          suffixIcon: suffixIcon,
+        ),
         keyboardType: keyboardType,
         obscureText: obscureText,
         validator: validator,
+        style: TextStyle(
+            color: const Color.fromARGB(255, 12, 12, 12)), // Change text color
       ),
     );
   }
@@ -235,7 +244,13 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                           ),
                         ),
                         DropdownButtonFormField<String>(
-                          decoration: InputDecoration(labelText: 'Gender'),
+                          decoration: InputDecoration(
+                            labelText: 'Gender',
+                            labelStyle: TextStyle(
+                              color: const Color.fromARGB(255, 101, 121, 220),
+                            ),
+                            border: OutlineInputBorder(),
+                          ),
                           value: _genderController.text.isEmpty
                               ? null
                               : _genderController.text,
@@ -243,7 +258,12 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                               ['Male', 'Female', 'Other'].map((String gender) {
                             return DropdownMenuItem<String>(
                               value: gender,
-                              child: Text(gender),
+                              child: Text(
+                                gender,
+                                style: TextStyle(
+                                  color: const Color.fromARGB(255, 12, 12, 12),
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
@@ -325,19 +345,28 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                               : null,
                         ),
                         DropdownButtonFormField(
-                          decoration:
-                              InputDecoration(labelText: 'Institution Name'),
+                          decoration: InputDecoration(
+                            labelText: 'Institution Name',
+                            labelStyle: TextStyle(
+                              color: const Color.fromARGB(255, 101, 121, 220),
+                            ),
+                            border: OutlineInputBorder(),
+                          ),
                           value: _institutionNameController.text.isEmpty
                               ? null
                               : _institutionNameController.text,
                           items: collegeList
                               .where((college) =>
-                                  college['user']['status'] ==
-                                  'Approved') // Filtering
+                                  college['user']['status'] == 'Approved')
                               .map<DropdownMenuItem<String>>((college) {
                             return DropdownMenuItem<String>(
                               value: college['user']['_id'],
-                              child: Text(college['user']['name']),
+                              child: Text(
+                                college['user']['name'],
+                                style: TextStyle(
+                                  color: const Color.fromARGB(255, 12, 12, 12),
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -405,18 +434,11 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                               decoration: BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
-                                    color: Colors.grey,
+                                    color: const Color.fromARGB(
+                                        255, 101, 121, 220),
                                     width: 1.0,
                                   ),
                                 ),
-                                // border: Border.fromBorderSide(BorderSide(
-                                //     style: BorderStyle.solid,
-
-                                //     color: Theme.of(context).primaryColor)),
-
-                                // borderRadius:
-                                //const BorderRadius.all(Radius.elliptical(30)
-                                // )
                               ),
                               child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -426,12 +448,17 @@ class _StudentRegistrationFormState extends State<StudentRegistrationForm> {
                                   ),
                                   Icon(
                                     Icons.image,
-                                    color: Colors.grey,
+                                    color: Color.fromARGB(255, 101, 121, 220),
                                   ),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text("Upload ID Proof")
+                                  Text(
+                                    "Upload ID Proof",
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 101, 121, 220),
+                                    ),
+                                  ),
                                 ],
                               ),
                             )),

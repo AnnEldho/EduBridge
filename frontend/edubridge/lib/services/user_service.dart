@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 class UserService {
   final dio = Dio();
-  final String url = "http://192.168.1.22:8000/api/";
+  final String url = "http://192.168.226.181:8000/api/";
 
   registerUser(String userdata) async {
     final response = await dio.post("${url}register", data: userdata);

@@ -48,138 +48,140 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
         title: const Text('Forgot Password'),
         backgroundColor: const Color.fromARGB(255, 101, 121, 220),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(5),
-        children: [
-          const SizedBox(height: 250),
-          const Center(
-            child: Text(
-              "Forgot Password",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 101, 121, 220),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: Form(
-              key: _formKey1,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: const Color.fromARGB(255, 198, 188, 188),
-                      labelText: 'Email',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 101, 121, 220),
-                      ),
-                      onPressed: _submitForm,
-                      child: const Text("Submit"),
-                    ),
-                  ),
-                ],
+      body: Center(
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.all(5),
+          children: [
+            const Center(
+              child: Text(
+                "Forgot Password",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w600,
+                  color: Color.fromARGB(255, 101, 121, 220),
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: Form(
-              key: _formKey2,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: password,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: const Color.fromARGB(255, 198, 188, 188),
-                      labelText: 'New Password',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(_hidePassword1
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () {
-                          setState(() {
-                            _hidePassword1 = !_hidePassword1;
-                          });
-                        },
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: _formKey1,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 198, 188, 188),
+                        labelText: 'Email',
+                        labelStyle: const TextStyle(color: Colors.white),
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
-                    obscureText: _hidePassword1,
-                  ),
-                  const SizedBox(height: 15),
-                  TextFormField(
-                    controller: confirmpassword,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: const Color.fromARGB(255, 198, 188, 188),
-                      labelText: 'Confirm New Password',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(_hidePassword2
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () {
-                          setState(() {
-                            _hidePassword2 = !_hidePassword2;
-                          });
-                        },
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 101, 121, 220),
+                        ),
+                        onPressed: _submitForm,
+                        child: const Text("Submit"),
                       ),
                     ),
-                    obscureText: _hidePassword2,
-                  ),
-                  const SizedBox(height: 15),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 101, 121, 220),
-                      ),
-                      onPressed: _submitForm,
-                      child: const Text("Submit"),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: _formKey2,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: password,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 198, 188, 188),
+                        labelText: 'New Password',
+                        labelStyle: const TextStyle(color: Colors.white),
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(_hidePassword1
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              _hidePassword1 = !_hidePassword1;
+                            });
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      obscureText: _hidePassword1,
+                    ),
+                    const SizedBox(height: 15),
+                    TextFormField(
+                      controller: confirmpassword,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 198, 188, 188),
+                        labelText: 'Confirm New Password',
+                        labelStyle: const TextStyle(color: Colors.white),
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(_hidePassword2
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              _hidePassword2 = !_hidePassword2;
+                            });
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      obscureText: _hidePassword2,
+                    ),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 101, 121, 220),
+                        ),
+                        onPressed: _submitForm,
+                        child: const Text("Submit"),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

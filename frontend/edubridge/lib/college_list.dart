@@ -11,7 +11,7 @@ class CollegeList extends StatefulWidget {
 }
 
 class _CollegeListState extends State<CollegeList> {
-   UserService _userService = UserService();
+  UserService _userService = UserService();
   bool isLoading = true;
   List<dynamic> approvedColleges = [];
 
@@ -77,36 +77,43 @@ class _CollegeListState extends State<CollegeList> {
                     itemBuilder: (context, index) {
                       final college = approvedColleges[index]['college'];
                       final user = approvedColleges[index]['user'];
-                      return Card(
-                        margin: EdgeInsets.all(10),
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'College Name: ${user['name']}',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 5),
-                              Text('Incharge Name: ${college['incharge_name']}'),
-                              Text('Incharge Email: ${college['incharge_email']}'),
-                              Text('Incharge Phone: ${college['incharge_phone']}'),
-                              SizedBox(height: 10),
-                              Text('User Email: ${user['email']}'),
-                              Text('User Phone: ${user['phone_number']}'),
-                              Text('Place: ${user['place']}'),
-                              Text('Taluk: ${user['taluk']}'),
-                              Text('District: ${user['district']}'),
-                              Text('State: ${user['state']}'),
-                              Text('Pincode: ${user['pincode']}'),
-                              Text('Status: ${user['status']}'),
-                            ],
+                      if (user['status'] == 'Approved') {
+                        return Card(
+                          margin: EdgeInsets.all(10),
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'College Name: ${user['name']}',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                    'Incharge Name: ${college['incharge_name']}'),
+                                Text(
+                                    'Incharge Email: ${college['incharge_email']}'),
+                                Text(
+                                    'Incharge Phone: ${college['incharge_phone']}'),
+                                SizedBox(height: 10),
+                                Text('User Email: ${user['email']}'),
+                                Text('User Phone: ${user['phone_number']}'),
+                                Text('Place: ${user['place']}'),
+                                Text('Taluk: ${user['taluk']}'),
+                                Text('District: ${user['district']}'),
+                                Text('State: ${user['state']}'),
+                                Text('Pincode: ${user['pincode']}'),
+                                Text('Status: ${user['status']}'),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        return SizedBox.shrink();
+                      }
                     },
                   ),
                 ),

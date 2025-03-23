@@ -81,44 +81,71 @@ class _GetPendingCollegeState extends State<GetPendingCollege> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('College Name: ${user['name']}',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold)),
-                        SizedBox(height: 5),
-                        Text('Incharge Name: ${college['incharge_name']}'),
-                        Text('Incharge Email: ${college['incharge_email']}'),
-                        Text('Incharge Phone: ${college['incharge_phone']}'),
-                        SizedBox(height: 10),
-                        Text('User Email: ${user['email']}'),
-                        Text('User Phone: ${user['phone_number']}'),
-                        Text('Place: ${user['place']}'),
-                        Text('Taluk: ${user['taluk']}'),
-                        Text('District: ${user['district']}'),
-                        Text('State: ${user['state']}'),
-                        Text('Pincode: ${user['pincode']}'),
-                        Text('Status: ${user['status']}'),
-                        Image.memory(
-                          base64Decode(college['idproof'].split(',')[1]),
-                          fit: BoxFit.contain,
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace? stackTrace) {
-                            return const Icon(Icons.image, size: 200);
-                          },
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('College Name: ${user['name']}',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 5),
+                                  Text(
+                                      'Incharge Name: ${college['incharge_name']}'),
+                                  Text(
+                                      'Incharge Email: ${college['incharge_email']}'),
+                                  Text(
+                                      'Incharge Phone: ${college['incharge_phone']}'),
+                                  SizedBox(height: 10),
+                                  Text('User Email: ${user['email']}'),
+                                  Text('User Phone: ${user['phone_number']}'),
+                                  Text('Place: ${user['place']}'),
+                                  Text('Taluk: ${user['taluk']}'),
+                                  Text('District: ${user['district']}'),
+                                  Text('State: ${user['state']}'),
+                                  Text('Pincode: ${user['pincode']}'),
+                                  Text('Status: ${user['status']}'),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Image.memory(
+                              base64Decode(college['idproof'].split(',')[1]),
+                              fit: BoxFit.contain,
+                              width: 200, // Set the desired width
+                              height: 200, // Set the desired height
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                return const Icon(Icons.image, size: 100);
+                              },
+                            ),
+                          ],
                         ),
                         SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () {
-                            changeStatus(pendingCollege[index]["user"]['_id'],
-                                'Approved', index);
-                          },
-                          child: Text('Approve'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            changeStatus(pendingCollege[index]["user"]['_id'],
-                                'Rejected', index);
-                          },
-                          child: Text('Reject'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                changeStatus(
+                                    pendingCollege[index]["user"]['_id'],
+                                    'Approved',
+                                    index);
+                              },
+                              child: Text('Approve'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                changeStatus(
+                                    pendingCollege[index]["user"]['_id'],
+                                    'Rejected',
+                                    index);
+                              },
+                              child: Text('Reject'),
+                            ),
+                          ],
                         ),
                       ],
                     ),
