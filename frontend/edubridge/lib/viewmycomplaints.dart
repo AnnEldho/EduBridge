@@ -60,31 +60,47 @@ class _ViewMyComplaintState extends State<ViewMyComplaint> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("My Complaints")),
-        body: isloading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : _data.length == 0
-                ? const Center(
-                    child: Text("No Complaints Added"),
-                  )
-                : ListView.builder(
-                    padding: EdgeInsets.all(10),
-                    itemCount: _data.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(_data[index]["subject"]),
-                        subtitle: Text(_data[index]["status"]),
-                        trailing: _data[index]["status"] == "Pending"
-                            ? Icon(
-                                Icons.verified,
-                                color: Colors.red,
-                              )
-                            : Icon(
-                                Icons.verified,
-                                color: Colors.green,
-                              ),
+      appBar: AppBar(
+        title: const Text("My Complaints"),
+        backgroundColor: Colors.blueAccent,
+      ),
+      body: isloading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : _data.isEmpty
+              ? const Center(
+                  child: Text(
+                    "No Complaints Added",
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.all(10),
+                  itemCount: _data.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      elevation: 5,
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: ListTile(
+                        title: Text(
+                          _data[index]["subject"],
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        subtitle: Text(
+                          _data[index]["status"],
+                          style: TextStyle(
+                              color: _data[index]["status"] == "Pending"
+                                  ? Colors.red
+                                  : Colors.green),
+                        ),
+                        trailing: Icon(
+                          Icons.verified,
+                          color: _data[index]["status"] == "Pending"
+                              ? Colors.red
+                              : Colors.green,
+                        ),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -94,7 +110,10 @@ class _ViewMyComplaintState extends State<ViewMyComplaint> {
                                     )),
                           );
                         },
-                      );
-                    }));
+                      ),
+                    );
+                  },
+                ),
+    );
   }
 }

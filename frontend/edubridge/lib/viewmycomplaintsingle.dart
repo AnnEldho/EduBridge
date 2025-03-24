@@ -1,4 +1,3 @@
-
 import 'package:edubridge/services/user_service.dart';
 import 'package:dio/dio.dart';
 import 'package:edubridge/widgets/text_widgets.dart';
@@ -38,7 +37,7 @@ class _ViewMyComplaintsSingleState extends State<ViewMyComplaintsSingle> {
         isloading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Error occurred,please try again"),
+        content: Text("Error occurred, please try again"),
         duration: Duration(milliseconds: 300),
       ));
     }
@@ -46,7 +45,6 @@ class _ViewMyComplaintsSingleState extends State<ViewMyComplaintsSingle> {
 
   @override
   void initState() {
-    // TODO: implement initState
     getComplaint();
     super.initState();
   }
@@ -59,33 +57,50 @@ class _ViewMyComplaintsSingleState extends State<ViewMyComplaintsSingle> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : ListView(padding: EdgeInsets.all(20), children: [
-              SubHeadingText(
-                  text: _data["subject"],
-                  align: TextAlign.left,
-                  color: Colors.black),
-              DescriptionText(
-                  text: _data["complaint"],
-                  align: TextAlign.justify,
-                  color: Colors.black),
-              SizedBox(
-                height: 10,
+          : Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SubHeadingText(
+                    text: _data["subject"],
+                    align: TextAlign.left,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(height: 10),
+                  DescriptionText(
+                    text: _data["complaint"],
+                    align: TextAlign.justify,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(height: 20),
+                  if (_data["reply"] != null) ...[
+                    Text(
+                      "Reply: " + _data["reply"],
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                  DescriptionText(
+                    text: "Status: " + _data["status"],
+                    align: TextAlign.left,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(height: 10),
+                  DescriptionText(
+                    text: DateTime.fromMicrosecondsSinceEpoch(
+                            int.parse(_data["timestamp"]) * 1000)
+                        .toString(),
+                    align: TextAlign.left,
+                    color: Colors.black,
+                  ),
+                ],
               ),
-              if (_data["reply"] != null) ...[Text("Reply :" + _data["reply"])],
-              SizedBox(
-                height: 10,
-              ),
-              DescriptionText(
-                  text: "Status: " + _data["status"],
-                  align: TextAlign.left,
-                  color: Colors.black),
-              DescriptionText(
-                  text: DateTime.fromMicrosecondsSinceEpoch(
-                          int.parse(_data["timestamp"]) * 1000)
-                      .toString(),
-                  align: TextAlign.left,
-                  color: Colors.black),
-            ]),
+            ),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:edubridge/addscholorship.dart';
 import 'package:edubridge/approvestudent.dart';
 import 'package:edubridge/addcomplaint.dart';
 import 'package:edubridge/college_profile.dart';
+import 'package:edubridge/viewmycomplaints.dart';
 import 'package:edubridge/viewscholorship.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -102,6 +103,13 @@ class _CollegedashboardState extends State<Collegedashboard> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => AddComplaintPage()),
+                      );
+                    }),
+                    _buildDrawerItem(Icons.people, "My Complaints", () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ViewMyComplaint()),
                       );
                     }),
                     _buildDrawerItem(Icons.view_list_sharp, "View Scholarship",

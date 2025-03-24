@@ -87,7 +87,7 @@ class _GetPendingCollegeState extends State<GetPendingCollege> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('College Name: ${user['name']}',
+                                  Text('${user['name']}',
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold)),
@@ -98,28 +98,69 @@ class _GetPendingCollegeState extends State<GetPendingCollege> {
                                       'Incharge Email: ${college['incharge_email']}'),
                                   Text(
                                       'Incharge Phone: ${college['incharge_phone']}'),
+                                  Divider(),
+                                  Text(
+                                    'Contact Details',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
                                   SizedBox(height: 10),
-                                  Text('User Email: ${user['email']}'),
-                                  Text('User Phone: ${user['phone_number']}'),
-                                  Text('Place: ${user['place']}'),
-                                  Text('Taluk: ${user['taluk']}'),
-                                  Text('District: ${user['district']}'),
-                                  Text('State: ${user['state']}'),
-                                  Text('Pincode: ${user['pincode']}'),
-                                  Text('Status: ${user['status']}'),
+                                  Text('Email: ${user['email']}',
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black87)),
+                                  Text('Phone: ${user['phone_number']}',
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black87)),
+                                  Text(
+                                      'Location: ${user['place']}, ${user['district']}',
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black87)),
+                                  Text(
+                                      'State: ${user['state']} - ${user['pincode']}',
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black87)),
                                 ],
                               ),
                             ),
                             SizedBox(width: 10),
-                            Image.memory(
-                              base64Decode(college['idproof'].split(',')[1]),
-                              fit: BoxFit.contain,
-                              width: 200, // Set the desired width
-                              height: 200, // Set the desired height
-                              errorBuilder: (BuildContext context,
-                                  Object exception, StackTrace? stackTrace) {
-                                return const Icon(Icons.image, size: 100);
+                            GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Dialog(
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        child: Image.memory(
+                                          base64Decode(
+                                              college['idproof'].split(',')[1]),
+                                          fit: BoxFit.contain,
+                                          errorBuilder: (BuildContext context,
+                                              Object exception,
+                                              StackTrace? stackTrace) {
+                                            return const Icon(Icons.image,
+                                                size: 100);
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
                               },
+                              child: Image.memory(
+                                base64Decode(college['idproof'].split(',')[1]),
+                                fit: BoxFit.contain,
+                                width: 200, // Set the desired width
+                                height: 200, // Set the desired height
+                                errorBuilder: (BuildContext context,
+                                    Object exception, StackTrace? stackTrace) {
+                                  return const Icon(Icons.image, size: 100);
+                                },
+                              ),
                             ),
                           ],
                         ),

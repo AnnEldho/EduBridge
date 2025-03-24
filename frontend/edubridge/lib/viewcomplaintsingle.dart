@@ -91,65 +91,92 @@ class _ViewComplaintsSingleState extends State<ViewComplaintsSingle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Complaints")),
+      appBar: AppBar(
+        title: const Text("Complaints"),
+        backgroundColor: Colors.blueAccent,
+      ),
       body: isloading
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : ListView(padding: EdgeInsets.all(20), children: [
-              SubHeadingText(
-                  text: _data["subject"],
-                  align: TextAlign.left,
-                  color: Colors.black),
-              DescriptionText(
-                  text: _data["complaint"],
-                  align: TextAlign.justify,
-                  color: Colors.black),
-              SizedBox(
-                height: 10,
-              ),
-              if (_data["reply"] == null) ...[
-                Text(
-                  "Add Reply",
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  controller: _reply,
-                  decoration: InputDecoration(
-                    label: Text("Reply"),
-                    prefixIcon: Icon(Icons.send),
+          : Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SubHeadingText(
+                    text: _data["subject"],
+                    align: TextAlign.left,
+                    color: Colors.black,
                   ),
-                  keyboardType: TextInputType.text,
-                  maxLines: 5,
-                  validator: (p0) {
-                    if (p0!.isEmpty) {
-                      return "Please Enter something";
-                    }
-                  },
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      addReply();
-                    },
-                    child: Text("Add Reply"))
-              ] else ...[
-                Text("Reply :" + _data["reply"])
-              ],
-              SizedBox(
-                height: 10,
+                  const SizedBox(height: 10),
+                  DescriptionText(
+                    text: _data["complaint"],
+                    align: TextAlign.justify,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(height: 20),
+                  if (_data["reply"] == null) ...[
+                    const Text(
+                      "Add Reply",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _reply,
+                      decoration: const InputDecoration(
+                        labelText: "Reply",
+                        prefixIcon: Icon(Icons.send),
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.text,
+                      maxLines: 5,
+                      validator: (p0) {
+                        if (p0!.isEmpty) {
+                          return "Please enter something";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: addReply,
+                      child: const Text("Add Reply"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
+                      ),
+                    ),
+                  ] else ...[
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.blue[50],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        "Reply: ${_data["reply"]}",
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 20),
+                  DescriptionText(
+                    text: "Status: ${_data["status"]}",
+                    align: TextAlign.left,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(height: 10),
+                  DescriptionText(
+                    text:
+                        "Date: ${DateTime.fromMicrosecondsSinceEpoch(int.parse(_data["timestamp"]) * 1000)}",
+                    align: TextAlign.left,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
-                DescriptionText(
-                  text: "Status: ${_data["status"]}",
-                  align: TextAlign.left,
-                  color: Colors.black),
-                DescriptionText(
-                  text: "Date: ${DateTime.fromMicrosecondsSinceEpoch(int.parse(_data["timestamp"]) * 1000)}",
-                  align: TextAlign.left,
-                  color: Colors.black),
-            ]),
+            ),
     );
   }
 }
