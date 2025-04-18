@@ -52,12 +52,10 @@ class _ViewMyComplaintsSingleState extends State<ViewMyComplaintsSingle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Complaints")),
+      appBar: AppBar(title: const Text("Complaints")),
       body: isloading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Padding(
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,8 +74,8 @@ class _ViewMyComplaintsSingleState extends State<ViewMyComplaintsSingle> {
                   const SizedBox(height: 20),
                   if (_data["reply"] != null) ...[
                     Text(
-                      "Reply: " + _data["reply"],
-                      style: TextStyle(
+                      "Reply: ${_data["reply"]}",
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.blue,
@@ -86,15 +84,14 @@ class _ViewMyComplaintsSingleState extends State<ViewMyComplaintsSingle> {
                     const SizedBox(height: 20),
                   ],
                   DescriptionText(
-                    text: "Status: " + _data["status"],
+                    text: "Status: ${_data["status"]}",
                     align: TextAlign.left,
                     color: Colors.black,
                   ),
                   const SizedBox(height: 10),
                   DescriptionText(
-                    text: DateTime.fromMicrosecondsSinceEpoch(
-                            int.parse(_data["timestamp"]) * 1000)
-                        .toString(),
+                    text:
+                        "Date: ${DateTime.fromMicrosecondsSinceEpoch(int.parse(_data["timestamp"]) * 1000)}",
                     align: TextAlign.left,
                     color: Colors.black,
                   ),

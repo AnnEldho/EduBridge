@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:edubridge/approvesponsorrequest.dart';
 import 'package:edubridge/addcomplaint.dart';
+import 'package:edubridge/editprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -16,16 +16,17 @@ class _SponsorDashboardState extends State<SponsorDashboard> {
   final storage = FlutterSecureStorage();
   String name = "";
   String email = "";
+  String approvalStatus =
+      'Approved'; // Add this if you're doing conditional rendering
+
   getUser() async {
-    print("Getting User");
     Map<String, String> allValues = await storage.readAll();
     var user = allValues['user'];
-    print(user);
     var userMap = jsonDecode(user!);
-    print(userMap);
     setState(() {
       name = userMap['name'];
       email = userMap['email'];
+      approvalStatus = userMap['status'] ?? 'Approved'; // Optional field
     });
   }
 
@@ -38,81 +39,99 @@ class _SponsorDashboardState extends State<SponsorDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sponsor Dashboard')),
+      appBar: AppBar(
+        title: const Text('Sponsor Dashboard'),
+        backgroundColor: const Color.fromARGB(255, 101, 121, 220),
+      ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text(name),
-              accountEmail: Text(email),
+              accountName: Text(
+                name,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              accountEmail: Text(
+                email,
+                style: const TextStyle(fontSize: 14),
+              ),
               currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
                 child: Text(
-                  name.length > 0 ? name[0] : "",
-                  style: TextStyle(fontSize: 40),
+                  name.isNotEmpty ? name[0] : "",
+                  style: const TextStyle(
+                    fontSize: 40,
+                    color: Color.fromARGB(255, 101, 121, 220),
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home, color: Colors.black),
-              title: Text("Home"),
-              onTap: () {
-                // Handle home tap
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.report_problem,
-                color: Colors.black,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 101, 121, 220),
               ),
-              title: const Text("Complaints "),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddComplaintPage()),
-                );
-              },
             ),
-            ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ApproveSponsorRequest()),
-                );
-              },
-              leading: Icon(Icons.question_answer),
-              title: Text("View Requests"),
-            ),
-            ListTile(
-              leading: Icon(Icons.volunteer_activism, color: Colors.black),
-              title: Text("Volunteers"),
-              onTap: () {
-                // Handle volunteers tap
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings, color: Colors.black),
-              title: Text("Settings"),
-              onTap: () {
-                // Handle settings tap
-              },
-            ),
-            ListTile(
-              title: Text("Logout"),
-              leading: Icon(
-                Icons.logout,
-                color: Colors.black,
+            Expanded(
+              child: ListView(
+                children: [
+                  if (approvalStatus == 'Approved') ...[
+                    _buildDrawerItem(Icons.school_sharp, "Edit Profile", () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditSponsorProfile()),
+                      );
+                    }),
+                    _buildDrawerItem(Icons.report_problem, "Complaints", () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddComplaintPage()),
+                      );
+                    }),
+                    _buildDrawerItem(Icons.question_answer, "View Requests",
+                        () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const ApproveSponsorRequest()),
+                      );
+                    }),
+                  ] else ...[
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "You are not approved yet. Please wait for admin approval.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ],
               ),
-              onTap: () async {
-                await storage.delete(key: "user");
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/login', (Route<dynamic> route) => false);
-              },
             ),
+            const Divider(),
+            _buildDrawerItem(Icons.logout, "Logout", () async {
+              await storage.delete(key: "user");
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login', (Route<dynamic> route) => false);
+            }, iconColor: Colors.red),
+            const SizedBox(height: 10),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDrawerItem(IconData icon, String title, VoidCallback onTap,
+      {Color iconColor = Colors.black}) {
+    return ListTile(
+      leading: Icon(icon, color: iconColor),
+      title: Text(title),
+      onTap: onTap,
     );
   }
 }

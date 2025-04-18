@@ -46,7 +46,6 @@ class _Admindashboard extends State<Admindashboard> {
               child: ListView(
                 children: [
                   _buildDrawerItem(Icons.home, "Home", () {}),
-                  _buildDrawerItem(Icons.info, "About", () {}),
                   _buildDrawerItem(Icons.people, "Sponsors",
                       () => _navigateTo(context, SponsorList())),
                   _buildDrawerItem(Icons.notifications, "Add Notifications",

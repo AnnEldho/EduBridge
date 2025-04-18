@@ -39,7 +39,7 @@ class _ViewComplaintsSingleState extends State<ViewComplaintsSingle> {
         isloading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Error occurred,please try again"),
+        content: Text("Error occurred, please try again"),
         duration: Duration(milliseconds: 300),
       ));
     }
@@ -48,7 +48,7 @@ class _ViewComplaintsSingleState extends State<ViewComplaintsSingle> {
   addReply() async {
     if (_reply.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Please add reply tetx"),
+        content: Text("Please add reply text"),
         duration: Duration(milliseconds: 300),
       ));
     } else {
@@ -60,11 +60,11 @@ class _ViewComplaintsSingleState extends State<ViewComplaintsSingle> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text("Reply Added"),
-                content: Text("Reply added successfully"),
+                title: const Text("Reply Added"),
+                content: const Text("Reply added successfully"),
                 actions: [
                   TextButton(
-                    child: Text("Ok"),
+                    child: const Text("Ok"),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -74,7 +74,7 @@ class _ViewComplaintsSingleState extends State<ViewComplaintsSingle> {
             });
       } on DioException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Error occurred,please try again"),
+          content: Text("Error occurred, please try again"),
           duration: Duration(milliseconds: 300),
         ));
       }
@@ -83,9 +83,8 @@ class _ViewComplaintsSingleState extends State<ViewComplaintsSingle> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    getComplaint();
     super.initState();
+    getComplaint();
   }
 
   @override
@@ -96,10 +95,8 @@ class _ViewComplaintsSingleState extends State<ViewComplaintsSingle> {
         backgroundColor: Colors.blueAccent,
       ),
       body: isloading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Padding(
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,12 +129,6 @@ class _ViewComplaintsSingleState extends State<ViewComplaintsSingle> {
                       ),
                       keyboardType: TextInputType.text,
                       maxLines: 5,
-                      validator: (p0) {
-                        if (p0!.isEmpty) {
-                          return "Please enter something";
-                        }
-                        return null;
-                      },
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(

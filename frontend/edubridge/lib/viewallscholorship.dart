@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:edubridge/services/user_service.dart';
 import 'package:edubridge/viewsinglescholorship.dart';
@@ -17,29 +16,43 @@ class _ViewAllScholorshipState extends State<ViewAllScholorship> {
   UserService _userService = UserService();
   final storage = FlutterSecureStorage();
   List<dynamic> scholarships = [];
+  bool isLoading = true;
+  bool isError = false;
 
   Future<void> getScholarship() async {
-    Map<String, String> allValues = await storage.readAll();
-    var user = allValues['user'];
-    print(user);
-    var userMap = jsonDecode(user!);
+    setState(() {
+      isLoading = true;
+      isError = false;
+    });
+
     try {
       final response = await _userService.viewAllScholarships();
-      print(response.data);
+      List<dynamic> allScholarships = response.data;
+
+      DateTime today = DateTime.now();
+
+      // Filter scholarships where opening_date has started and closing_date is not finished
+      List<dynamic> filteredScholarships = allScholarships.where((scholarship) {
+        DateTime openingDate = DateTime.parse(scholarship['opening_date']);
+        DateTime closingDate = DateTime.parse(scholarship['closing_date']);
+        return openingDate.isBefore(today) ||
+            openingDate.isAtSameMomentAs(today);
+      }).toList();
+
       setState(() {
-        scholarships = response.data;
+        scholarships = filteredScholarships;
+        isLoading = false;
       });
     } on DioException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Error occurred,please try again"),
-        duration: Duration(milliseconds: 300),
-      ));
+      setState(() {
+        isError = true;
+        isLoading = false;
+      });
     }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getScholarship();
   }
@@ -48,38 +61,115 @@ class _ViewAllScholorshipState extends State<ViewAllScholorship> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Scholarship'),
+        title: const Text('Available Scholarships'),
+        backgroundColor: Colors.blueAccent,
       ),
-      body: ListView.builder(
-        itemCount: scholarships.length,
-        itemBuilder: (context, index) {
-          var openingDate = DateTime.parse(scholarships[index]['opening_date']);
-          var closingDate = DateTime.parse(scholarships[index]['closing_date']);
-          var formattedOpeningDate =
-              "${openingDate.day}/${openingDate.month}/${openingDate.year}";
-          var formattedClosingDate =
-              "${closingDate.day}/${closingDate.month}/${closingDate.year}";
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : isError
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Failed to load scholarships. Please try again.",
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: getScholarship,
+                        child: const Text("Retry"),
+                      ),
+                    ],
+                  ),
+                )
+              : scholarships.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "No active scholarships available.",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(10),
+                      itemCount: scholarships.length,
+                      itemBuilder: (context, index) {
+                        var openingDate =
+                            DateTime.parse(scholarships[index]['opening_date']);
+                        var closingDate =
+                            DateTime.parse(scholarships[index]['closing_date']);
+                        var formattedOpeningDate =
+                            "${openingDate.day}/${openingDate.month}/${openingDate.year}";
+                        var formattedClosingDate =
+                            "${closingDate.day}/${closingDate.month}/${closingDate.year}";
 
-          return ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ViewScholorShipSingle(id: scholarships[index]['_id'])),
-              );
-            },
-            leading: Icon(Icons.school),
-            title: Text(scholarships[index]['title']),
-            subtitle: Text(scholarships[index]['description'] +
-                "\n" +
-                formattedOpeningDate +
-                " to " +
-                formattedClosingDate),
-            trailing: Text(scholarships[index]['amount'].toString()),
-          );
-        },
-      ),
+                        return Card(
+                          elevation: 5,
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(15),
+                            leading: const Icon(Icons.school,
+                                size: 40, color: Colors.blue),
+                            title: Text(
+                              scholarships[index]['title'],
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    scholarships[index]['description'],
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    "$formattedOpeningDate - $formattedClosingDate",
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "₹${scholarships[index]['amount']}",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ViewScholorShipSingle(
+                                    id: scholarships[index]['_id'],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
     );
   }
 }

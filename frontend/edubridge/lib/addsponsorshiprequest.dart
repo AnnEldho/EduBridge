@@ -16,29 +16,30 @@ class _SponsorShipRequestState extends State<SponsorShipRequest> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
-  final TextEditingController _ngoidController = TextEditingController();
   final TextEditingController _sponsoridController = TextEditingController();
   UserService userService = UserService();
   final storage = FlutterSecureStorage();
   List<dynamic> sponsors = [];
+
   Future<void> getAllSponsors() async {
     try {
       final response = await userService.getAllSponsors();
-      print(response.data);
       setState(() {
         sponsors = response.data;
       });
-    } on DioException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Error occurred,please try again"),
-        duration: Duration(milliseconds: 300),
-      ));
+    } on DioException {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Error occurred, please try again"),
+          duration: Duration(milliseconds: 300),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getAllSponsors();
   }
@@ -47,7 +48,6 @@ class _SponsorShipRequestState extends State<SponsorShipRequest> {
   void dispose() {
     _descriptionController.dispose();
     _amountController.dispose();
-    _ngoidController.dispose();
     _sponsoridController.dispose();
     super.dispose();
   }
@@ -55,32 +55,31 @@ class _SponsorShipRequestState extends State<SponsorShipRequest> {
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       Map<String, String> allValues = await storage.readAll();
-      var user = allValues['user'];
-      print(user);
-      var userMap = jsonDecode(user!);
-      // Process the data
+      var user = jsonDecode(allValues['user']!);
       var jsonData = jsonEncode({
         "description": _descriptionController.text,
         "amount": _amountController.text,
-        "ngoid": userMap['_id'],
+        "ngoid": user['_id'],
         "sponsorid": _sponsoridController.text,
       });
       try {
-        final response = await userService.addSponsorRequest(jsonData);
-        print(response.data);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Request added successfully"),
-          duration: Duration(
-            milliseconds: 3000,
+        await userService.addSponsorRequest(jsonData);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Request added successfully"),
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.green,
           ),
-          backgroundColor: Colors.green,
-        ));
+        );
         Navigator.pop(context);
-      } on DioException catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Error occurred,please try again"),
-          duration: Duration(milliseconds: 300),
-        ));
+      } on DioException {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Error occurred, please try again"),
+            duration: Duration(milliseconds: 300),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
@@ -89,24 +88,31 @@ class _SponsorShipRequestState extends State<SponsorShipRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sponsorship Request"),
+        title: const Text("Sponsorship Request"),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 101, 121, 220),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Card(
           elevation: 5,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(15),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(20.0),
             child: Form(
               key: _formKey,
-              child: ListView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextFormField(
                     controller: _descriptionController,
-                    decoration: InputDecoration(labelText: 'Description'),
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.description),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a description';
@@ -114,9 +120,14 @@ class _SponsorShipRequestState extends State<SponsorShipRequest> {
                       return null;
                     },
                   ),
+                  const SizedBox(height: 16),
                   TextFormField(
                     controller: _amountController,
-                    decoration: InputDecoration(labelText: 'Amount'),
+                    decoration: const InputDecoration(
+                      labelText: 'Amount',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.attach_money),
+                    ),
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -128,8 +139,12 @@ class _SponsorShipRequestState extends State<SponsorShipRequest> {
                       return null;
                     },
                   ),
+                  const SizedBox(height: 16),
                   DropdownButtonFormField(
-                    decoration: InputDecoration(labelText: 'Sponsor'),
+                    decoration: const InputDecoration(
+                      labelText: 'Sponsor',
+                      border: OutlineInputBorder(),
+                    ),
                     value: _sponsoridController.text.isEmpty
                         ? null
                         : _sponsoridController.text,
@@ -146,14 +161,28 @@ class _SponsorShipRequestState extends State<SponsorShipRequest> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please select a Sponsor';
+                        return 'Please select a sponsor';
                       }
                       return null;
                     },
                   ),
+                  const SizedBox(height: 20),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 40),
+                    ),
                     onPressed: _submitForm,
-                    child: Text('Submit'),
+                    child: const Text(
+                      'Submit',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromARGB(255, 101, 121, 220)),
+                    ),
                   ),
                 ],
               ),
