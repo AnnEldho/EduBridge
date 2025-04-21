@@ -78,7 +78,7 @@ class _CollegedashboardState extends State<Collegedashboard> {
               child: ListView(
                 children: [
                   if (isApproved) ...[
-                    _buildDrawerItem(Icons.school_sharp, "Edit Profile", () {
+                    _buildDrawerItem(Icons.edit, "Edit Profile", () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => ProfilePage()),

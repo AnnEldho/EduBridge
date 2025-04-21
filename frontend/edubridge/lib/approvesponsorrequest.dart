@@ -98,30 +98,64 @@ class _ApproveSponsorRequestState extends State<ApproveSponsorRequest> {
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'Amount: ${sponsorship['amount']} Rs',
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
+                                  const Divider(
+                                    thickness: 1,
+                                    color: Colors.black54,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.currency_rupee,
+                                        color: Colors.black87,
+                                        size: 18,
+                                      ),
+                                      Text(
+                                        '${sponsorship['amount']}',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      const Text(
+                                        ' Rs',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color.fromARGB(255, 5, 5, 5),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(
+                                    thickness: 1,
+                                    color: Colors.black54,
+                                  ),
+                                  const Text(
+                                    "Requested by:",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black54,
+                                    ),
                                   ),
                                   const SizedBox(height: 6),
                                   Text(
-                                    'NGO: ${sponsorship['ngoid']['name']}',
+                                    '${sponsorship['ngoid']['name']}',
                                     style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black87),
                                   ),
                                   Text(
-                                    'Email: ${sponsorship['ngoid']['email']}',
+                                    ' ${sponsorship['ngoid']['email']}',
                                     style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black87),
                                   ),
                                   Text(
-                                    'Phone: ${sponsorship['ngoid']['phone_number']}',
+                                    '${sponsorship['ngoid']['phone_number']}',
                                     style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,

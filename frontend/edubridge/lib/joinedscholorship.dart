@@ -47,49 +47,68 @@ class _ViewJoinedScholorshipState extends State<ViewJoinedScholorship> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Scholarship'),
+        title: const Text('Applied Scholarships'),
       ),
-      body: ListView.builder(
-        itemCount: scholarships.length,
-        itemBuilder: (context, index) {
-          var openingDate = DateTime.parse(
-              scholarships[index]["scholorshipid"]['opening_date']);
-          var closingDate = DateTime.parse(
-              scholarships[index]["scholorshipid"]['closing_date']);
-          var formattedOpeningDate =
-              "${openingDate.day}/${openingDate.month}/${openingDate.year}";
-          var formattedClosingDate =
-              "${closingDate.day}/${closingDate.month}/${closingDate.year}";
+      body: scholarships.isEmpty
+          ? const Center(child: Text("No applied scholarships found."))
+          : ListView.builder(
+              padding: const EdgeInsets.all(12),
+              itemCount: scholarships.length,
+              itemBuilder: (context, index) {
+                var scholarship = scholarships[index]["scholorshipid"];
+                var provider = scholarships[index]["providerid"];
 
-          return Card(
-            child: Column(
-              children: [
-                ListTile(
-                  trailing:
-                      Text(scholarships[index]["scholorshipid"]["status"]),
-                  title: Text(scholarships[index]["scholorshipid"]["title"]),
-                  subtitle: Text(
-                      "Opening Date: $formattedOpeningDate\nClosing Date: $formattedClosingDate\nAmount: ${scholarships[index]["scholorshipid"]["amount"]}"),
-                ),
-                ListTile(
-                  title: Text(scholarships[index]["providerid"]["name"] +
-                      "\n" +
-                      "Provided By:" +
-                      scholarships[index]["providerid"]["usertype"]),
-                  subtitle: Text(
-                      "Contact: ${scholarships[index]["providerid"]["phone_number"].toString()}"),
-                ),
-                // ElevatedButton(
-                //   onPressed: () {
-                //     // joinScholorship();
-                //   },
-                //   child: const Text("Leave Scholarship"),
-                // )
-              ],
+                var openingDate = DateTime.parse(scholarship['opening_date']);
+                var closingDate = DateTime.parse(scholarship['closing_date']);
+
+                var formattedOpeningDate =
+                    "${openingDate.day}/${openingDate.month}/${openingDate.year}";
+                var formattedClosingDate =
+                    "${closingDate.day}/${closingDate.month}/${closingDate.year}";
+
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  color: Color(0xFFFFBB55),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// 🎓 Scholarship Title
+                        Text(
+                          scholarship["title"],
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+
+                        /// 📆 Dates & Amount
+                        Text("Opening Date: $formattedOpeningDate"),
+                        Text("Closing Date: $formattedClosingDate"),
+                        Text(
+                          "Amount: ₹${scholarship['amount']}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600, color: Colors.blue),
+                        ),
+                        const Divider(height: 20, color: Colors.black),
+
+                        /// 👤 Provider Info
+                        Text(
+                          "Provided by: ${provider["name"]} (${provider["usertype"]})",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text("Contact: ${provider["phone_number"]}"),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }

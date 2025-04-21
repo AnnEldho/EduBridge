@@ -110,6 +110,7 @@ class _ViewAllScholorshipState extends State<ViewAllScholorship> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
+                          color: const Color.fromARGB(255, 255, 187, 85),
                           child: ListTile(
                             contentPadding: const EdgeInsets.all(15),
                             leading: const Icon(Icons.school,
@@ -133,12 +134,25 @@ class _ViewAllScholorshipState extends State<ViewAllScholorship> {
                                     style: const TextStyle(fontSize: 14),
                                   ),
                                   const SizedBox(height: 5),
-                                  Text(
-                                    "$formattedOpeningDate - $formattedClosingDate",
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontStyle: FontStyle.italic,
-                                    ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.calendar_month,
+                                        size: 16,
+                                        color: Colors.blueGrey,
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        "$formattedOpeningDate - $formattedClosingDate",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.blueGrey.shade700,
+                                          fontStyle: FontStyle.italic,
+                                          letterSpacing: 0.3,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -160,7 +174,7 @@ class _ViewAllScholorshipState extends State<ViewAllScholorship> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ViewScholorShipSingle(
+                                  builder: (context) => ViewScholarshipSingle(
                                     id: scholarships[index]['_id'],
                                   ),
                                 ),

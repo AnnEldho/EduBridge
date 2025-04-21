@@ -57,9 +57,12 @@ class _ViewAllComplaintState extends State<ViewAllComplaint> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Complaints"),
+        title: const Text(
+          "My Complaints",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
         backgroundColor: const Color.fromARGB(255, 101, 121, 220),
-        elevation: 2,
+        elevation: 4,
       ),
       body: isloading
           ? const Center(
@@ -69,48 +72,58 @@ class _ViewAllComplaintState extends State<ViewAllComplaint> {
               ? const Center(
                   child: Text(
                     "No Complaints Added",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey),
                   ),
                 )
               : ListView.builder(
-                  padding: const EdgeInsets.all(12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   itemCount: _data.length,
                   itemBuilder: (context, index) {
+                    final complaint = _data[index];
+                    final statusColor = complaint["status"] == "Pending"
+                        ? Colors.red
+                        : Colors.green;
+
                     return Card(
                       elevation: 4,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       margin: const EdgeInsets.only(bottom: 12),
-                      color: const Color.fromARGB(255, 255, 255, 255),
+                      color: Colors.white,
+                      shadowColor: Colors.black12,
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 16),
+                            vertical: 8, horizontal: 16),
                         title: Text(
-                          _data[index]["subject"],
-                          style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 101, 121, 220)),
+                          complaint["subject"],
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 101, 121, 220),
+                          ),
                         ),
                         trailing: Chip(
                           label: Text(
-                            _data[index]["status"],
+                            complaint["status"],
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          backgroundColor: _data[index]["status"] == "Pending"
-                              ? Colors.red
-                              : Colors.green,
+                          backgroundColor: statusColor,
+                          labelStyle: const TextStyle(fontSize: 12),
                         ),
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ViewComplaintsSingle(
-                                complaintid: _data[index]["_id"],
+                                complaintid: complaint["_id"],
                               ),
                             ),
                           );

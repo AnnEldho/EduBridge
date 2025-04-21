@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 class UserService {
   final dio = Dio();
-  final String url = "http://192.168.86.181:8000/api/";
+  final String url = "http://192.168.216.181:8000/api/";
 
   registerUser(String userdata) async {
     final response = await dio.post("${url}register", data: userdata);
@@ -31,6 +31,11 @@ class UserService {
 
   getSponsorList() async {
     final response = await dio.get("${url}getsponsorlist");
+    return response;
+  }
+
+  getNgoList() async {
+    final response = await dio.get("${url}getngolist");
     return response;
   }
 

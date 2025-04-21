@@ -91,79 +91,142 @@ class _ViewComplaintsSingleState extends State<ViewComplaintsSingle> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Complaints"),
+        title: const Text(
+          "Complaints",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.blueAccent,
+        elevation: 4,
       ),
       body: isloading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SubHeadingText(
-                    text: _data["subject"],
-                    align: TextAlign.left,
-                    color: Colors.black,
+                  // Subject Text
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    child: Text(
+                      _data["subject"],
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                        fontSize: 16, // Smaller size
+                        color: Colors.blueAccent,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  DescriptionText(
-                    text: _data["complaint"],
-                    align: TextAlign.justify,
-                    color: Colors.black,
+
+                  const SizedBox(height: 12),
+
+                  // Complaint Description
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      _data["complaint"],
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                        fontSize: 16, // Smaller size
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 20),
+
+                  // Add Reply Section or Display Reply
                   if (_data["reply"] == null) ...[
-                    const Text(
-                      "Add Reply",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 12),
                     TextFormField(
                       controller: _reply,
                       decoration: const InputDecoration(
                         labelText: "Reply",
                         prefixIcon: Icon(Icons.send),
                         border: OutlineInputBorder(),
+                        filled: true,
                       ),
                       keyboardType: TextInputType.text,
                       maxLines: 5,
+                      style: const TextStyle(fontSize: 16),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: addReply,
                       child: const Text("Add Reply"),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueAccent,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ] else ...[
+                    // Displaying Existing Reply
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.blue[50],
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         "Reply: ${_data["reply"]}",
-                        style: const TextStyle(fontSize: 16),
+                        style: const TextStyle(
+                            fontSize: 16, color: Colors.black87),
                       ),
                     ),
                   ],
                   const SizedBox(height: 20),
-                  DescriptionText(
-                    text: "Status: ${_data["status"]}",
-                    align: TextAlign.left,
-                    color: Colors.black,
+
+                  // Status Text
+                  if (_data["status"] == "Pending") ...[
+                    Text(
+                      "Status: ${_data["status"]}",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 255, 0, 0),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ] else ...[
+                    DescriptionText(
+                      text: "Status: ${_data["status"]}",
+                      align: TextAlign.left,
+                      color: Colors.black87,
+                    ),
+                  ],
+                  const SizedBox(height: 12),
+
+                  // Date Text
+                  Text(
+                    "Date: ${DateTime.fromMicrosecondsSinceEpoch(int.parse(_data["timestamp"]) * 1000).toString().split(' ')[0]}",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  DescriptionText(
-                    text:
-                        "Date: ${DateTime.fromMicrosecondsSinceEpoch(int.parse(_data["timestamp"]) * 1000)}",
-                    align: TextAlign.left,
-                    color: Colors.black,
-                  ),
+
                   const SizedBox(height: 20),
                 ],
               ),

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:edubridge/approvesponsorrequest.dart';
 import 'package:edubridge/addcomplaint.dart';
 import 'package:edubridge/editprofile.dart';
+import 'package:edubridge/viewmycomplaints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -74,7 +75,7 @@ class _SponsorDashboardState extends State<SponsorDashboard> {
               child: ListView(
                 children: [
                   if (approvalStatus == 'Approved') ...[
-                    _buildDrawerItem(Icons.school_sharp, "Edit Profile", () {
+                    _buildDrawerItem(Icons.edit, "Edit Profile", () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -86,6 +87,14 @@ class _SponsorDashboardState extends State<SponsorDashboard> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => AddComplaintPage()),
+                      );
+                    }),
+                    _buildDrawerItem(Icons.report_problem, " My Complaints",
+                        () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ViewMyComplaint()),
                       );
                     }),
                     _buildDrawerItem(Icons.question_answer, "View Requests",

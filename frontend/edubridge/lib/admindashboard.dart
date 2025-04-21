@@ -1,6 +1,7 @@
 import 'package:edubridge/addnotification.dart';
 import 'package:edubridge/college_list.dart';
 import 'package:edubridge/ngo-register.dart';
+import 'package:edubridge/ngo_list.dart';
 import 'package:edubridge/sponsor_list.dart';
 import 'package:edubridge/viewallcomplaint.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,8 @@ class _Admindashboard extends State<Admindashboard> {
             Expanded(
               child: ListView(
                 children: [
-                  _buildDrawerItem(Icons.home, "Home", () {}),
+                  _buildDrawerItem(Icons.people, "College",
+                      () => _navigateTo(context, CollegeList())),
                   _buildDrawerItem(Icons.people, "Sponsors",
                       () => _navigateTo(context, SponsorList())),
                   _buildDrawerItem(Icons.notifications, "Add Notifications",

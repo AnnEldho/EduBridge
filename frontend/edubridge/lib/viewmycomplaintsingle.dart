@@ -60,16 +60,41 @@ class _ViewMyComplaintsSingleState extends State<ViewMyComplaintsSingle> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SubHeadingText(
-                    text: _data["subject"],
-                    align: TextAlign.left,
-                    color: Colors.black,
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    child: Text(
+                      _data["subject"],
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                        fontSize: 16, // Smaller size
+                        color: Colors.blueAccent,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 10),
-                  DescriptionText(
-                    text: _data["complaint"],
-                    align: TextAlign.justify,
-                    color: Colors.black,
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      _data["complaint"],
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                        fontSize: 16, // Smaller size
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   if (_data["reply"] != null) ...[
@@ -78,22 +103,30 @@ class _ViewMyComplaintsSingleState extends State<ViewMyComplaintsSingle> {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: Color.fromARGB(255, 11, 11, 11),
                       ),
                     ),
                     const SizedBox(height: 20),
                   ],
-                  DescriptionText(
-                    text: "Status: ${_data["status"]}",
-                    align: TextAlign.left,
-                    color: Colors.black,
+                  Text(
+                    "Status: ${_data["status"]}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 247, 0, 0),
+                    ),
                   ),
                   const SizedBox(height: 10),
-                  DescriptionText(
-                    text:
-                        "Date: ${DateTime.fromMicrosecondsSinceEpoch(int.parse(_data["timestamp"]) * 1000)}",
-                    align: TextAlign.left,
-                    color: Colors.black,
+                  // Date Text
+                  Text(
+                    "Date: ${DateTime.fromMicrosecondsSinceEpoch(int.parse(_data["timestamp"]) * 1000).toString().split(' ')[0]}",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                 ],
               ),

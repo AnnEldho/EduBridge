@@ -1,16 +1,11 @@
 import 'dart:convert';
 import 'package:edubridge/addcomplaint.dart';
-import 'package:edubridge/addscholorship.dart';
 import 'package:edubridge/addsponsorshiprequest.dart';
-import 'package:edubridge/approvestudent.dart';
-import 'package:edubridge/change_password.dart';
 import 'package:edubridge/joinedscholorship.dart';
 import 'package:edubridge/mysponsorshiprequest.dart';
 import 'package:edubridge/viewallnotification.dart';
 import 'package:edubridge/viewallscholorship.dart';
 import 'package:edubridge/viewmycomplaints.dart';
-import 'package:edubridge/viewscholorship.dart';
-import 'package:edubridge/viewsponsorships.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -53,22 +48,8 @@ class _StudentdashboardState extends State<Studentdashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Student Dashboard'),
+        title: const Text('Student Dashboard'),
         backgroundColor: const Color.fromARGB(255, 101, 121, 220),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.notifications,
-              color: Color.fromARGB(255, 11, 11, 11),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ViewAllNotification()),
-              );
-            },
-          ),
-        ],
       ),
       drawer: Drawer(
         child: Column(
@@ -100,7 +81,7 @@ class _StudentdashboardState extends State<Studentdashboard> {
               child: ListView(
                 children: [
                   if (approvalStatus == 'Approved') ...[
-                    _buildDrawerItem(Icons.school_sharp, "Edit Profile", () {}),
+                    _buildDrawerItem(Icons.edit, "Edit Profile", () {}),
                     _buildDrawerItem(Icons.school_sharp, "Scholarship", () {
                       Navigator.push(
                         context,
@@ -108,7 +89,7 @@ class _StudentdashboardState extends State<Studentdashboard> {
                             builder: (context) => ViewAllScholorship()),
                       );
                     }),
-                    _buildDrawerItem(Icons.people, "My Scholarship", () {
+                    _buildDrawerItem(Icons.school_sharp, "My Scholarship", () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -136,6 +117,21 @@ class _StudentdashboardState extends State<Studentdashboard> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => AddComplaintPage()),
+                      );
+                    }),
+                    _buildDrawerItem(Icons.report_problem, " My Complaints",
+                        () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ViewMyComplaint()),
+                      );
+                    }),
+                    _buildDrawerItem(Icons.notifications, "Notifications", () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ViewAllNotification()),
                       );
                     }),
                   ] else ...[

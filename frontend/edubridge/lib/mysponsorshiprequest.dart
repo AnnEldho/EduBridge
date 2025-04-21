@@ -48,34 +48,119 @@ class _MySponsorshipRequestState extends State<MySponsorshipRequest> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Sponsorship Request'),
+        backgroundColor: const Color(0xFF6579DC),
+        centerTitle: true,
       ),
-      body: sponsorships.length == 0
-          ? Center(
-              child: Text("No sponsorship request"),
+      body: sponsorships.isEmpty
+          ? const Center(
+              child: Text(
+                "No sponsorship request",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             )
           : ListView.builder(
               itemCount: sponsorships.length,
+              padding: const EdgeInsets.all(12),
               itemBuilder: (context, index) {
+                final sponsor = sponsorships[index]['sponsorid'];
                 return Card(
+                  color: const Color(0xFFFFBB55),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  elevation: 4,
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
                     child: Column(
-                  children: [
-                    ListTile(
-                      trailing: Text(
-                        sponsorships[index]['status'],
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      title: Text(sponsorships[index]['description']),
-                      subtitle: Text(sponsorships[index]['amount'].toString() +
-                          "Rs\n" +
-                          sponsorships[index]['sponsorid']['name'] +
-                          "\n" +
-                          sponsorships[index]['sponsorid']['email'] +
-                          "\n" +
-                          sponsorships[index]['sponsorid']['phone_number']
-                              .toString()),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Description + Status
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                sponsorships[index]['description'],
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            Text(
+                              sponsorships[index]['status'],
+                              style: const TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                        const Divider(
+                          thickness: 1,
+                          color: Colors.black54,
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.currency_rupee,
+                              color: Colors.black87,
+                              size: 18,
+                            ),
+                            Text(
+                              '${sponsorships[index]['amount']}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            const Text(
+                              ' Rs',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Color.fromARGB(255, 5, 5, 5),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(
+                          thickness: 1,
+                          color: Colors.black54,
+                        ),
+                        const Text(
+                          "Requested to:",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "${sponsor['name']}",
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87),
+                        ),
+                        Text(
+                          "${sponsor['email']}",
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87),
+                        ),
+                        Text(
+                          "${sponsor['phone_number']}",
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87),
+                        ),
+                      ],
                     ),
-                  ],
-                ));
+                  ),
+                );
               },
             ),
     );

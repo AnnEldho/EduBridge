@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:edubridge/addscholorship.dart';
 import 'package:edubridge/addsponsorshiprequest.dart';
 import 'package:edubridge/addcomplaint.dart';
 import 'package:edubridge/mysponsorshiprequest.dart';
+import 'package:edubridge/viewmycomplaints.dart';
 import 'package:edubridge/viewscholorship.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -19,16 +19,16 @@ class _NGODashboardState extends State<NGODashboard> {
   final storage = FlutterSecureStorage();
   String name = "";
   String email = "";
+  String approvalStatus = "Approved"; // Default status
+
   getUser() async {
-    print("Getting User");
     Map<String, String> allValues = await storage.readAll();
     var user = allValues['user'];
-    print(user);
     var userMap = jsonDecode(user!);
-    print(userMap);
     setState(() {
       name = userMap['name'];
       email = userMap['email'];
+      approvalStatus = userMap['status'] ?? 'Approved';
     });
   }
 
@@ -41,105 +41,113 @@ class _NGODashboardState extends State<NGODashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('NGO Dashboard')),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              UserAccountsDrawerHeader(
-                accountName: Text(name),
-                accountEmail: Text(email),
-                currentAccountPicture: CircleAvatar(
-                  child: Text(
-                    name.length > 0 ? name[0] : "",
-                    style: TextStyle(fontSize: 40),
+      appBar: AppBar(
+        title: const Text('NGO Dashboard'),
+        backgroundColor: const Color.fromARGB(255, 101, 121, 220),
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              accountName: Text(
+                name,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              accountEmail: Text(
+                email,
+                style: const TextStyle(fontSize: 14),
+              ),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Text(
+                  name.isNotEmpty ? name[0].toUpperCase() : "",
+                  style: const TextStyle(
+                    fontSize: 40,
+                    color: Color.fromARGB(255, 101, 121, 220),
                   ),
                 ),
               ),
-              ListTile(
-                leading: Icon(Icons.home, color: Colors.black),
-                title: Text("Home"),
-                onTap: () {
-                  // Handle home tap
-                },
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 101, 121, 220),
               ),
-              ListTile(
-                leading: Icon(Icons.school, color: Colors.black),
-                title: Text("Add Scholarship"),
-                onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddScholorshipPage()),
-                );
-              },
-              ),
-              ListTile(
-                leading: Icon(Icons.visibility, color: Colors.black),
-                title: Text("View Scholarship"),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ViewScholorship()),
-                  );
-                },
-                
-              ),
-              ListTile(
-                leading: Icon(Icons.send, color: Colors.black),
-              title: const Text("Send Sponsorship Request"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SponsorShipRequest()),
-                );
-              },
             ),
-              
-              ListTile(
-                leading: Icon(Icons.inbox, color: Colors.black),
-              title: const Text("My Sponsorship Request"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MySponsorshipRequest()),
-                );
-              },
+            Expanded(
+              child: ListView(
+                children: [
+                  _buildDrawerItem(Icons.school, "Add Scholarship", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AddScholorshipPage()),
+                    );
+                  }),
+                  _buildDrawerItem(Icons.visibility, "View Scholarship", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ViewScholorship()),
+                    );
+                  }),
+                  _buildDrawerItem(Icons.send, "Send Sponsorship Request", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SponsorShipRequest()),
+                    );
+                  }),
+                  _buildDrawerItem(Icons.inbox, "My Sponsorship Request", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MySponsorshipRequest()),
+                    );
+                  }),
+                  _buildDrawerItem(Icons.report_problem, "Complaints", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AddComplaintPage()),
+                    );
+                  }),
+                  _buildDrawerItem(Icons.report_problem, " My Complaints", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ViewMyComplaint()),
+                    );
+                  }),
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                  ),
+                ],
               ),
-              ListTile(
-            leading: Icon(
-              Icons.report_problem,
-              color: Colors.black,
             ),
-            title: const Text("Complaints "),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddComplaintPage()),
-              );
-            },
-          ),
-              ListTile(
-                title: Text("Logout"),
-                leading: Icon(
-                  Icons.logout,
-                  color: Colors.black,
-                ),
-                onTap: () async {
-                  await storage.delete(key: "user");
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/login', (Route<dynamic> route) => false);
-                },
-              ),
-            ],
-          ),
+            const Divider(),
+            _buildDrawerItem(Icons.logout, "Logout", () async {
+              await storage.delete(key: "user");
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login', (Route<dynamic> route) => false);
+            }, iconColor: Colors.red),
+            const SizedBox(height: 10),
+          ],
         ),
-        );
+      ),
+      body: const Center(
+        child: Text(
+          "Welcome to the NGO Dashboard!",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        ),
+      ),
+    );
   }
-}
 
-void main() {
-  runApp(MaterialApp(
-    home: NGODashboard(),
-  ));
+  Widget _buildDrawerItem(IconData icon, String title, VoidCallback onTap,
+      {Color iconColor = Colors.black}) {
+    return ListTile(
+      leading: Icon(icon, color: iconColor),
+      title: Text(title),
+      onTap: onTap,
+    );
+  }
 }
