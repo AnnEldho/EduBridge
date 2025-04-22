@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:edubridge/ngodashboard.dart';
 import 'package:edubridge/services/user_service.dart';
+import 'package:edubridge/viewscholorship.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -43,6 +45,10 @@ class _AddScholorshipPageState extends State<AddScholorshipPage> {
         duration: Duration(milliseconds: 3000),
         backgroundColor: Colors.green,
       ));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ViewScholorship()),
+      );
     } on DioException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Error occurred,please try again"),

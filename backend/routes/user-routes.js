@@ -7,6 +7,7 @@ router.get('/getpendingsponsor', userController.getPendingSponsor);
 router.get('/getpendingcollege', userController.getPendingCollege);
 router.get('/getcollegelist', userController.getCollegeList);
 router.get('/getsponsorlist', userController.getSponsorList);
+router.get('/getngolist', userController.getNgoList);
 router.post('/updatestatus', userController.updateStatus);
 router.post('/forgotpassword', userController.forgotPassword);
 router.post('/checkemail', userController.checkEmail);

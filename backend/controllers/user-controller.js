@@ -233,6 +233,34 @@ exports.getSponsorList = (req,res) => {
         return res.status(500).json({ message: "Internal error", error: err });
     });
 };
+
+exports.getNgoList = (req,res) => {
+    User.find({ usertype: 'Ngo'}).then((users) => {
+        if (users.length > 0) {
+            const ngoIds = users.map(user => user._id);
+            Ngo.find({ user_id: { $in: ngoIds } }).then((ngos) => {
+                const ngolist = ngos.map(ngo => {
+                    const user = users.find(user => user._id.equals(ngo.user_id));
+                    return {
+                        ngo,
+                        user
+                    };
+                }
+                );
+                return res.status(200).json(ngolist);
+            }).catch((err) => {
+                return res.status(500).json({ message: "Internal error", error: err });
+            });
+        } else {
+            return res.status(404).json({ message: "No ngos found" });
+        }
+    }
+    ).catch((err) => {
+        return res.status(500).json({ message: "Internal error", error: err });
+    });
+};
+
+
 // Add the changePassword function here
 
 exports.forgotPassword = (req, res) => {

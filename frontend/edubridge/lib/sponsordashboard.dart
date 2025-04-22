@@ -78,8 +78,7 @@ class _SponsorDashboardState extends State<SponsorDashboard> {
                     _buildDrawerItem(Icons.edit, "Edit Profile", () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => EditSponsorProfile()),
+                        MaterialPageRoute(builder: (context) => ProfilePage()),
                       );
                     }),
                     _buildDrawerItem(Icons.report_problem, "Complaints", () {

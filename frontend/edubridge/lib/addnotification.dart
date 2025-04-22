@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:edubridge/admindashboard.dart';
 import 'package:edubridge/services/user_service.dart';
+import 'package:edubridge/viewallnotification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -32,9 +33,10 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
         duration: Duration(milliseconds: 3000),
         backgroundColor: Colors.green,
       ));
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Admindashboard()),
+        MaterialPageRoute(builder: (context) => ViewAllNotification()),
       );
     } on DioException catch (e) {
       print("Error: ${e.response?.data}");

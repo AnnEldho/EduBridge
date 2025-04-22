@@ -20,9 +20,9 @@ exports.RegisterNgo=(req,res)=>{
 }
 
 exports.GetNgo=(req,res)=>{	
-	Ngo.find().then((ngos)=>{
+	User.find({usertype:'Ngo'}).then((ngos)=>{
 		if(ngos){
-			return res.status(200).json({ngos});
+			return res.status(200).json(ngos);
 		}
 		else{
 			return res.status(500).json({message:"Internal error"});

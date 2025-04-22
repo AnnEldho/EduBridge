@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:edubridge/mysponsorshiprequest.dart';
 import 'package:edubridge/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -75,7 +76,10 @@ class _SponsorShipRequestState extends State<SponsorShipRequest> {
 
         await _userService.addSponsorRequest(jsonEncode(request));
         _showSnackBar("Request submitted successfully!", Colors.green);
-        Navigator.pop(context);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MySponsorshipRequest()),
+        );
       } catch (e) {
         _showSnackBar("Submission failed. Try again.", Colors.red);
       } finally {

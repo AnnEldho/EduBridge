@@ -4,6 +4,7 @@ import 'package:edubridge/ngo-register.dart';
 import 'package:edubridge/ngo_list.dart';
 import 'package:edubridge/sponsor_list.dart';
 import 'package:edubridge/viewallcomplaint.dart';
+import 'package:edubridge/viewallnotification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -52,8 +53,12 @@ class _Admindashboard extends State<Admindashboard> {
                       () => _navigateTo(context, SponsorList())),
                   _buildDrawerItem(Icons.notifications, "Add Notifications",
                       () => _navigateTo(context, AddNotificationPage())),
+                  _buildDrawerItem(Icons.notifications, "View Notifications",
+                      () => _navigateTo(context, ViewAllNotification())),
                   _buildDrawerItem(Icons.business, "Add NGO",
                       () => _navigateTo(context, NGORegistrationForm())),
+                  _buildDrawerItem(Icons.business, " NGO list",
+                      () => _navigateTo(context, NGOList())),
                   _buildDrawerItem(Icons.report, "View Complaints",
                       () => _navigateTo(context, ViewAllComplaint())),
                 ],

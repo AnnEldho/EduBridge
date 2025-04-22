@@ -24,7 +24,7 @@ class _ViewAllNotificationState extends State<ViewAllNotification> {
       return "No Date";
     }
     try {
-      DateTime parsedDate = DateTime.parse(dateTimeString);
+      DateTime parsedDate = DateTime.parse(dateTimeString).toLocal();
       return DateFormat('dd MMM yyyy, hh:mm a').format(parsedDate);
     } catch (e) {
       return "Invalid Date";
